@@ -14,14 +14,73 @@ class sellerevents_eventedit {
 		add_action('wp_ajax_getEvenTypeAttr', array( __CLASS__, 'getEvenTypeAttr'));
 		add_action('wp_ajax_getUserContacts', array( __CLASS__, 'getUserContacts'));
 		add_action('wp_ajax_checkfields', array( __CLASS__, 'CheckFields'));
+		add_action('wp_ajax_add_ajaxclient', array( __CLASS__, 'add_ajaxclient'));
  		if( ($pagenow == 'post-new.php' || $pagenow == 'post.php') ) {
 			add_action('admin_print_styles-post.php', array( __CLASS__ ,'admin_styles'));
 			add_action('admin_print_styles-post-new.php', array( __CLASS__ ,'admin_styles'));
 			add_action('admin_print_scripts-post.php', array( __CLASS__ ,'admin_scripts'));
-			add_action('admin_print_scripts-post-new.php', array( __CLASS__ ,'admin_scripts'));  	
+			add_action('admin_print_scripts-post-new.php', array( __CLASS__ ,'admin_scripts'));
+			
+			add_filter('attribute_escape', array( __CLASS__, 'change_button_texts'), 10, 2);
 		}
 	}
 
+	public static function change_button_texts($safe_text, $text ){
+		global $post, $current_screen, $screen;
+		
+		if (isset($post) && $post->post_type == 'wpsellerevents') {
+			switch( $safe_text ) {
+/*				case __('Save Draft');
+					$safe_text = __('Save as Pendient', WPSellerEvents :: TEXTDOMAIN );
+					break;
+*/
+				case __('Publish');
+					$safe_text = __('Create Event', WPSellerEvents :: TEXTDOMAIN );
+					break;
+
+				default:
+					break;
+			}
+		}
+		return $safe_text;
+	}
+
+	public static function add_ajaxclient() {
+		$response['success'] = false;
+		$response['message'] = __('Error creating the client.');
+
+		if ( !wp_verify_nonce( @$_POST['wpaddclient_nonce'], 'edit-event' ) )
+			wp_send_json($response); 
+
+		$args = array(
+			'post_title' 	          => apply_filters('wpse_parse_title', $_POST['client_title']),
+			'post_status' 	          => 'publish',
+			'post_type' 	          => 'wpse_client',
+			'comment_status'          => "closed",
+			'ping_status'             => "closed"
+		);
+		
+		$isclient = get_page_by_title( $args['post_title'], 'OBJECT', 'wpse_client' );
+		if ( !is_null($isclient->ID) ) { // already exists
+			$response['success'] = false;
+			$response['message'] = __('The client already exists.');
+			wp_send_json($response); 
+		}
+		$post_id = wp_insert_post( $args );
+
+		if($post_id > 0 ) {
+			$response['message'] = __('Client added.');
+			$response['client_id'] = "$post_id";
+			$response['success'] = true;
+			$client = array();
+			$client = apply_filters('wpse_check_client', $_POST);
+
+			sellerevents_clients::update_client($post_id, $client);
+		}
+		wp_send_json($response); 
+
+	}
+	
 	public static function create_meta_boxes() {
 		global $post,$event_data, $cfg;
 		$event_data = WPSellerEvents :: get_event($post->ID);
@@ -36,9 +95,11 @@ class sellerevents_eventedit {
 		if(!current_user_can('wpse_seller')){
 			add_meta_box( 'seller-box', __('Salesman', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__  ,'seller_box' ),'wpsellerevents','side', 'default' );
 		}
+		add_action('post_submitbox_minor_actions', array( __CLASS__ ,'options_box'));
+		
 		add_meta_box( 'status-box', __('Event Status', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'status_box' ),'wpsellerevents','side', 'high' );
 		add_meta_box( 'obs-box', __('Observations', WPSellerEvents :: TEXTDOMAIN ), array( __CLASS__  ,'obs_box' ),'wpsellerevents','normal', 'default' );
-		add_meta_box( 'options-box', __('Options for this event', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'options_box' ),'wpsellerevents','normal', 'default' );
+		//add_meta_box( 'options-box', __('Options for this event', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'options_box' ),'wpsellerevents','normal', 'default' );
 	}		
 
 			//*************************************************************************************
@@ -121,32 +182,27 @@ class sellerevents_eventedit {
 		$activated = $event_data['activated'];
 		$cron = $event_data['cron'];
 		$cronnextrun = $event_data['cronnextrun'];
-		$client_id = $event_data['customer_id'];
-		if(isset($client_id) && ($client_id>0) ) {
-			$customer = get_post( $client_id );
-			if(is_object($customer)) $user_contacts = get_post_meta($client_id, 'user_contacts', TRUE) ;
-		}else {
-			$customer = (object)array('display_name'=> __('Select the customer from the list.', WPSellerEvents :: TEXTDOMAIN ) );
-		}
-		if(!isset($user_contacts)) {
-			$user_contacts = array();
-			$contact_name = __('Client contacts not defined.', WPSellerEvents :: TEXTDOMAIN );
-		}else {
-			$contact_name = $event_data['contact_name'];
-		}
 		wp_nonce_field( 'edit-event', 'wpsellerevents_nonce' ); 
 		?>
-		<p><b><?php echo '<label for="fromdate">' . __('From Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
+		<div class="clear"></div>
+		<div style="text-align:left;">
+		<p><b><?php echo '<label for="fromdate">' . __('Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
 			<input class="fieldate" type="text" name="fromdate" value="<?php 
 				echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate ); 				
-				?>" id="fromdate"/>&nbsp; &nbsp; <b><?php echo '<label for="todate">' . __('To Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
+				?>" id="fromdate"/>&nbsp; &nbsp; 
+		<?php /*
+			<b><?php echo '<label for="todate">' . __('To Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
 			<input class="fieldate" type="text" name="todate" value="<?php 
-				echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $todate ); 				
-				?>" id="todate"/><br />
+				echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $todate );
+				?>" id="todate"/>
+			 <br />		 
 			<span class="description"><?php _e('Insert the start and end dates from this event.', WPSellerEvents :: TEXTDOMAIN ); ?></span>
+		 */ ?>
+			<br />		 
+			<span class="description"><?php _e('Insert the date for this event.', WPSellerEvents :: TEXTDOMAIN ); ?></span>
 		</p>
-		
-		<p><b><?php echo __('Alarm Type', WPSellerEvents :: TEXTDOMAIN ); ?>: </b><br/>
+<div style="display:none;">
+		<b><?php echo __('Alarm Type', WPSellerEvents :: TEXTDOMAIN ); ?>: </b><br/>
 		
 		<b><label for="quantity"><?php _e( 'Quantity', WPSellerEvents :: TEXTDOMAIN ); ?></label>: </b>
 			<input style="width: 60px;text-align: right; padding-right: 0px; " type="number" min="0" class="small-text" name="quantity" id="quantity" value="<?php echo esc_attr( $quantity ) ? esc_attr($quantity) : ''; ?>">&nbsp; &nbsp; 
@@ -170,17 +226,103 @@ class sellerevents_eventedit {
 				?>
 			</span>
 			<br />
-			<br />
+</div>
+		<p>
 			<input class="checkbox" value="1" type="checkbox" <?php checked($activated,true); ?> name="activated" id="activated" /> <label for="activated"><b><?php _e('Activate Alarm', WPSellerEvents :: TEXTDOMAIN ); ?></b></label>
-<?php /*		<br />
-			&nbsp; &nbsp; <?php _e('Working as:', WPSellerEvents :: TEXTDOMAIN ); echo ' <span class="b">'. date_i18n( $cfg['dateformat'].' '.get_option( 'time_format' ), $fromdate ) .'</span> <i> '.$cron.'</i>'; ?>
-*/ ?>			<br />
-			&nbsp; &nbsp; <?php _e('Runtime:', WPSellerEvents :: TEXTDOMAIN ); echo ' <span class="b">'. date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun).'</span>';	?>
+			<br />
+			&nbsp; &nbsp; <?php echo ' <span class="b" id="alertdate">'. date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun).'</span>';	?>
 			<br />
 			&nbsp; &nbsp; <?php _e('Save event to refresh.', WPSellerEvents :: TEXTDOMAIN ); ?>
 			<br />
 		</p>
+		</div>
 		
+		<?php
+	}
+	
+	public static function obs_box( $post ) {  
+		global $post, $event_data, $cfg;
+
+		$client_id = $event_data['customer_id'];
+		if(isset($client_id) && ($client_id>0) ) {
+			$customer = get_post( $client_id );
+			if(is_object($customer)) $user_contacts = get_post_meta($client_id, 'user_contacts', TRUE) ;
+		}else {
+			$customer = (object)array('post_title'=> __('Select the customer from the list.', WPSellerEvents :: TEXTDOMAIN ) );
+		}
+		if(!isset($user_contacts)) {
+			$user_contacts = array();
+			$contact_name = __('Client contacts not defined.', WPSellerEvents :: TEXTDOMAIN );
+		}else {
+			$contact_name = $event_data['contact_name'];
+		}
+
+		$event_obs = $event_data['event_obs'];
+		?>
+		
+		<div id="popup_addclient_background" style="display:none;"></div> 
+		<div id="addclient_popup" style="display:none;">
+			<div id="content_popup_addclient">
+				<table class="addclient_table form-table">
+				<tbody>
+				<tr class="client_title-wrap">
+					<th><label for="client_title"><?php _e("Client Name", WPSellerEvents :: TEXTDOMAIN ) ?></label></th>
+					<td><input type="text" readonly="true" name="client_title" id="client_title" value="" class="regular-text"></td>
+				</tr>
+				<tr class="user-email-wrap">
+					<th><label for="email"><?php _e("E-mail", WPSellerEvents :: TEXTDOMAIN ) ?></label></th>
+					<td><input type="email" name="email" id="email" value="" class="regular-text ltr"></td>
+				</tr>
+				<tr class="user-address-wrap">
+					<th><label for="address"><?php _e("Address", WPSellerEvents :: TEXTDOMAIN ) ?>	</label></th>
+					<td><input type="text" name="address" id="address" value="" class="regular-text"></td>
+				</tr>
+				<tr class="user-phone-wrap">
+					<th><label for="phone"><?php _e("Telephone", WPSellerEvents :: TEXTDOMAIN ) ?>	</label></th>
+					<td><input type="text" name="phone" id="phone" value="" class="regular-text"></td>
+				</tr>
+				<tr class="user-cellular-wrap">
+					<th><label for="cellular"><?php _e("Cellular", WPSellerEvents :: TEXTDOMAIN ) ?>	</label></th>
+					<td><input type="text" name="cellular" id="cellular" value="" class="regular-text"></td>
+				</tr>
+				<tr class="user-facebook-wrap">
+					<th><label for="facebook"><?php _e("Facebook URL", WPSellerEvents :: TEXTDOMAIN ) ?>	</label></th>
+					<td><input type="text" name="facebook" id="facebook" value="" class="regular-text"></td>
+				</tr>
+				<tr class="user-display-name-wrap" id="row_user_aseller">
+					<th><label for="facebook"><?php _e('Salesman', WPSellerEvents :: TEXTDOMAIN ) ?>	</label></th>
+					<td>
+					<?php
+					if(!current_user_can('wpse_seller'))	 {
+						$user_aseller = get_current_user_id();
+						$allsellers = get_users( array( 'role' => 'wpse_seller' ) );
+						// Array of stdClass objects.
+						$select = '<select name="user_aseller" id="user_aseller">';
+						if( !isset( $user_aseller ) || $user_aseller == '' ) {
+							$select .='<option value="" selected="selected">'. __('Choose a Salesman', WPSellerEvents :: TEXTDOMAIN  ) . '</option>';
+						}
+						foreach ( $allsellers as $suser ) {
+							$select .='<option value="' . $suser->ID . '" ' . selected($user_aseller, $suser->ID, false) . '>' . esc_html( $suser->display_name ) . '</option>';
+						}
+						$select .= '</select>';
+						echo $select;
+					}else{
+						//$user = get_user_by( 'ID', get_current_user_id() );
+						echo $current_user->display_name;
+						echo '<input type="hidden" name="user_aseller" id="user_aseller" value="'. get_current_user_id() .'" class="regular-text ltr">';
+					}
+					?>
+					</td>
+				</tr>
+				
+				</table>
+			</div>
+			<div id="buttons_addclient_popup">
+				<a href="#" class="button-primary add" id="accept_client" style="margin:3px;"><?php _e('Accept'); ?></a> 
+				<a href="#" class="button" id="btn_cancel_client_popup" style="margin:3px;"><?php _e('Cancel'); ?></a>
+			</div>
+		</div>
+				
 		<table id="customers-contacts">
 			<thead>
 			<th>
@@ -203,18 +345,21 @@ class sellerevents_eventedit {
 						?>
 					</div>
 				</div>
-				<label onclick="jQuery('#customers-list').fadeToggle();" class="button add" id="add_customer"> <?php _e('Search Client', WPSellerEvents :: TEXTDOMAIN); ?>.</label>
+					
+				<label onclick="jQuery('#customers-list').fadeToggle();" class="button" id="add_customer"><span class="mya4_sprite searchIco">&nbsp;&nbsp;&nbsp;</span> <?php _e('Search Client', WPSellerEvents :: TEXTDOMAIN); ?>.</label>
 				<div id="customers-list" class="Customers" <?php echo (isset($client_id) && ($client_id>0)) ?'style="display:none;"' : '' ?>>
 					<div class="header-customer-list">
-						<div class="right srchFilterOuter">
-						<div style="float:left;margin-left:2px;">
-							<input id="psearchtext" name="psearchtext" class="srchbdr0" type="text" value=''>
+						<label class="button-primary add right" id="add_newclient"> <?php _e('Add New', WPSellerEvents :: TEXTDOMAIN); ?>.</label>
+						<div class="srchFilterOuter left">
+							<div style="float:left;margin-left:2px;">
+								<input id="psearchtext" name="psearchtext" class="srchbdr0" type="text" value='' placeholder="<?php _e('Type Client Name Here', WPSellerEvents :: TEXTDOMAIN) ?>">
+							</div>
+							<div class="srchSpacer"></div>
+							<div id="productsearch" class="mya4_sprite searchIco" style="margin-top:6px;float: left;"></div>
 						</div>
-						<div class="srchSpacer"></div>
-						<div id="productsearch" class="mya4_sprite searchIco" style="margin-top:6px;float: left;"></div>
+						
 					</div>
-
-					</div><div style="clear: both;"></div>
+					<div style="clear: both;"></div>
 					<?php
 					$allcustomers = get_posts( array( 'post_type'=>'wpse_client', 'posts_per_page' => -1 ) );
 					// Array of stdClass objects.
@@ -224,7 +369,8 @@ class sellerevents_eventedit {
 						echo '<li id="user-' . $user->ID . '" class="user-item">' . esc_html( $user->post_title ) .' :: '. esc_html( $user_email ) . '</li>';
 					}
 					?></ul>
-				</div>		
+				</div>
+				
 				</td>
 				
 				<td>  <?php // *************************  Contact ?>
@@ -239,7 +385,7 @@ class sellerevents_eventedit {
 				</div>
 				<?php $show=true; if(!isset($user_contacts['description'])) $show=false;  ?> 
 				<label onclick="jQuery('#contacts-list').fadeToggle();" class="ucshow button add" id="add_contact" <?php echo (!$show) ?'style="display:none;"' : '' ?>> <?php _e('Search Contact', WPSellerEvents :: TEXTDOMAIN); ?>.</label>
-				<div id="contacts-list" class="Customers ucshow" <?php echo ((isset($contact_name) && !empty($contact_name)) or !$show ) ?'style="display:none;"' : '' ?>>
+				<div id="contacts-list" class="Customers ucshow" style="display:none;">
 					<div class="header-contact-list">
 						<div class="right srchFilterOuter">
 							<div style="float:left;margin-left:2px;">
@@ -261,14 +407,7 @@ class sellerevents_eventedit {
 			</tr>
 			</tbody>
 		</table>
-		
-		<?php
-	}
-	
-	public static function obs_box( $post ) {  
-		global $post, $event_data, $cfg;
-		$event_obs = $event_data['event_obs'];
-		?>
+
 		<table class="form-table">
 			<tbody>
 				<tr class="user-display-name-wrap">
@@ -284,16 +423,16 @@ class sellerevents_eventedit {
 						</div>
 						<br />
 						<div id="event_obs" data-callback="jQuery('#msgdrag').html('<?php _e('Update Event to save order', WPSellerEvents :: TEXTDOMAIN ); ?>').fadeIn();"> <!-- callback script to run on successful sort -->
-							<?php for($i = 0; $i <= count($event_obs['text']); $i++) : ?>
-								<?php $lastitem = $i == count($event_obs['text']); ?>			
+							<?php for($i = 0; $i <= count($event_obs['text']); $i++) : // agregar +1 al count para mostrar 1 en blanco?>
+								<?php $lastitem = $i == count($event_obs['text']); ?>
 								<div id="event_obs_ID<?php echo $i; ?>" class="sortitem <?php if(($i % 2) == 0) echo 'bw'; else echo 'lightblue'; ?> <?php if($lastitem) echo 'event_obs_new_field'; ?> " <?php if($lastitem) echo 'style="display:none;"'; ?> > <!-- sort item -->
 									<div class="sorthandle"> </div> <!-- sort handle -->
 									<div class="event_obs_date_column" id="">
-										<input name="event_obs[date][<?php echo $i; ?>]" type="text" value="<?php 
-										echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), 
+										<input name="event_obs[date][<?php echo $i; ?>]" type="text" value="<?php
+										echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ),
 												//(!isset($event_obs['date'][$i])) ? time()+(int)get_option( 'gmt_offset' )*3600 : $event_obs['date'][$i] 
 												(!isset($event_obs['date'][$i])) ? current_time('timestamp')  : $event_obs['date'][$i] 
-												); 
+												);
 										?>" class="datetimepicker"/>
 									</div>
 									<div class="event_obs_text_column" id="">
@@ -304,7 +443,7 @@ class sellerevents_eventedit {
 									</div>
 								</div>
 							<?php $a = $i;
-							endfor ?>		
+							endfor ?>
 						</div>
 						<input id="event_obs_field_max" value="<?php echo $a; ?>" type="hidden" name="event_obs_field_max">
 						<div id="paging-box">		  
@@ -317,13 +456,12 @@ class sellerevents_eventedit {
 		</table>
 		<?php 
 	}
-			
-	
+
   	public static function admin_styles(){
 		global $post;
 		if($post->post_type != 'wpsellerevents') return $post->ID;
-		wp_enqueue_style('wpse-sprite',WPSellerEvents :: $uri .'css/sprite.css');	
-		wp_enqueue_style('jquery-datetimepicker',WPSellerEvents :: $uri .'css/jquery.datetimepicker.css');	
+		wp_enqueue_style('wpse-sprite',WPSellerEvents :: $uri .'css/sprite.css');
+		wp_enqueue_style('jquery-datetimepicker',WPSellerEvents :: $uri .'css/jquery.datetimepicker.css');
 		add_action('admin_head', array( __CLASS__ ,'campaigns_admin_head_style'));
 	}
 
@@ -331,16 +469,45 @@ class sellerevents_eventedit {
 		global $post;
 		if($post->post_type != 'wpsellerevents') return $post->ID;
 		wp_register_script('jquery-datetimepicker', WPSellerEvents::$uri .'js/jquery.datetimepicker.js', array('jquery'));
-		wp_enqueue_script('jquery-datetimepicker'); 
+		wp_enqueue_script('jquery-datetimepicker');
 		wp_register_script('jquery-vsort', WPSellerEvents::$uri .'js/jquery.vSort.min.js', array('jquery'));
 		wp_enqueue_script('jquery-vsort'); 
 		add_action('admin_head', array( __CLASS__ ,'campaigns_admin_head_scripts'));
 	}
 
 	public static function getEvenTypeAttr() { //Ajax action
-		if(!isset($_POST['eventype_ID'])) die('ERROR: ID no encontrado.'); 
+		if(!isset($_POST['eventype_ID'])) die('ERROR: ID no encontrado.');
+		$cfg = get_option(WPSellerEvents :: OPTION_KEY);
+		$cfg = apply_filters('wpse_check_options', $cfg);
+
 		$t_id = $_POST['eventype_ID'];
-		if($term_meta = get_option( "eventype_$t_id" ))	$term_meta['success'] = true;  else $term_meta['success'] = false;
+		$fromdate = WPSellerEvents::date2time($_POST['fromdate'], $cfg['dateformat'].' '.get_option('time_format') );
+		if($term_meta = get_option( "eventype_$t_id" ))	{
+			switch($term_meta['period']) {
+			case 'minutes':
+				$seconds = 60;
+				break;
+			case 'hours':
+				$seconds = 3600;
+				break;
+			case 'weeks':
+				$seconds = 3600*24*7;
+				break;
+			default: //days
+				$seconds = 3600*24;
+				break;
+ 		    }
+		    $cronseconds = $term_meta['quantity'] * $seconds;
+		    $cronnextrun = $fromdate - $cronseconds ;
+		    $term_meta['alertdate'] = date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun);
+		    if ( $cronnextrun <= current_time('timestamp') )
+			    $term_meta['alertdate'] = '---';   // reset vars to allow send mail with cron
+
+			$term_meta['success'] = true;
+		}
+		else {
+			$term_meta['success'] = false;
+		}
 
 		wp_send_json($term_meta); 
 	}
@@ -349,12 +516,13 @@ class sellerevents_eventedit {
 		if(!isset($_POST['user_ID'])) die('ERROR: ID no encontrado.'); 
 		$userid = $_POST['user_ID'];
 		$response['user_contacts'] = get_post_meta($userid, 'user_contacts', TRUE) ;
+		if($response['user_contacts']['description'][0]=='') $response['user_contacts']='';
 		if(!isset($response['user_contacts']) || empty($response['user_contacts']) ) $response['success'] = false;
 		else $response['success'] = true;
 
-		wp_send_json($response); 
+		wp_send_json($response);
 	}
-	
+
 	public static function CheckFields() {  // Ajax Action: check required fields values before save post
 		$err_message = "";
 		$response = array();
@@ -362,11 +530,11 @@ class sellerevents_eventedit {
 			$err_message .= __('Error: Field From Date must be filled.', WPSellerEvents :: TEXTDOMAIN ).'<br />';
 			$response['fields'][]='fromdate';
 		}
-		if(!isset($_POST['todate']) or $_POST['todate']=='__/__/____' ) {
+/*		if(!isset($_POST['todate']) or $_POST['todate']=='__/__/____' ) {
 			$err_message .= __('Error: Field To Date must be filled.', WPSellerEvents :: TEXTDOMAIN ).'<br />';
 			$response['fields'][]='todate';
 		}
-		if( (int)$_POST['customer_id']==0 ) {
+*/		if( (int)$_POST['customer_id']==0 ) {
 			$err_message .= __('Error: A customer must be selected from list..', WPSellerEvents :: TEXTDOMAIN ).'<br />';
 			$response['fields'][]='customer_name';
 		}
@@ -392,10 +560,11 @@ class sellerevents_eventedit {
 		global $post;
 		if($post->post_type != 'wpsellerevents') return $post_id;
 			?><style type="text/css">
-				.fieldate {width: 155px;}
+				.fieldate {width: 160px;}
 				.b {font-weight: bold;}
 				.hide {display: none;}
 				.updated.notice-success a {display: none;}
+				#misc-publishing-actions {display: none;}
 				#poststuff h3 {background-color: #6EDA67;}
 				
 				#msgdrag {display:none;color:red;padding: 0 0 0 20px;font-weight: 600;font-size: 1em;}
@@ -408,6 +577,52 @@ class sellerevents_eventedit {
 				.delete:hover{color: red;}
 				.delete:before { content: "\2718";}
 				.add:before { content: "\271A";}
+				
+				#addclient_popup {
+					position:absolute;
+					left: 50%;
+					margin-left: -250px;
+					width:500px;
+					min-height:200px;
+					height:auto;
+					background-color:white;
+					z-index:5;
+					border:5px solid #d9d0d0;
+					border-radius:4px;
+					box-shadow: 0 0 15px rgba(0,0,0,.1);
+				}
+				#popup_addclient_background {
+					position:fixed;
+					left: 0%;
+					top: 0%;
+					width:100%;
+					height:100%;
+					background-color:#000;
+					opacity:0.8;
+					z-index:3;
+					margin-left:160px;
+				}
+				#content_popup_addclient {
+					min-height:165px;
+					height:auto;
+					padding:4px;
+				}
+				#buttons_addclient_popup {
+					border-top:1px solid #d9d0d0;
+					height:35px;
+					text-align:right;
+				}
+				.addclient_table {
+					width:100%;
+				}
+				.addclient_td_name {
+					width: 55%;
+					text-align: right;
+				}
+				.addclient_td_input {
+					width:65%;
+				}
+
 				
 				table#customers-contacts {width: 100%;border-spacing: 0;}
 				table#customers-contacts th {background-color: #6EDA67;padding: 5px 0;}
@@ -427,9 +642,9 @@ class sellerevents_eventedit {
 				#customers-list ul,#contacts-list ul,#sellers-list ul{margin: 2px 0 0 0;max-height: 400px;overflow-y: scroll;}
 				#customers-list li,#contacts-list li,#sellers-list li {border-bottom: 1px solid #BCBCBC;text-align: center;margin: 0;padding: 3px;}
 				#customers-list li:hover, #contacts-list li:hover, #sellers-list li:hover {background-color: #BCBCBC;cursor: pointer;}
-				.srchFilterOuter {width: 260px;background-color: #FFFFFF;border: 1px solid #BCBCBC;border-radius: 5px;margin-top: 1px;height: 24px;float: right;}
+				.srchFilterOuter {width: 260px;background-color: #FFFFFF;border: 1px solid #BCBCBC;border-radius: 5px;margin-top: 1px;height: 24px;}
 				.srchSpacer {float: left;background-color: #BCBCBC;height: 17px;margin: 3px 5px 0 5px;width: 1px;}
-				.srchbdr0 {border-style: none;border: 0;height: 22px;color: #999;font-size: 13px;padding: 0px;width: 227px;}
+				.srchbdr0 {border-style: none;border: 0;height: 22px;color: #999;font-size: 13px;padding: 0px 0 0 2px;width: 227px;}
 				
 				/*
 				label[for=rich_editing] input { display: none; }
@@ -473,10 +688,13 @@ class sellerevents_eventedit {
 				if( $current ){
 					var data = {
 						eventype_ID: $(this).val(),
+						fromdate: $("input[name='fromdate']").val(),
 						action: "getEvenTypeAttr"
 					};
 					$.post(ajaxurl, data, function(etattr){  //array with custom fields of term ID
 						if( etattr.success ){
+							$('#alertdate').html(etattr.alertdate);
+							$('#alertdate').animate({'background-color':'red'},300).animate({'background-color':'white'},600).animate({'background-color':'pink'},400);
 							var qty = etattr.quantity;
 							$('#quantity').val(qty);
 							$('#quantity').animate({'background-color':'red'},300).animate({'background-color':'white'},600).animate({'background-color':'pink'},400);
@@ -492,7 +710,7 @@ class sellerevents_eventedit {
 				}
 			});
 			
-			load_user_contacts=function(user_id){
+			load_user_contacts = function(user_id){
 				var data = {
 					user_ID: user_id,
 					action: "getUserContacts"
@@ -549,7 +767,7 @@ class sellerevents_eventedit {
 					$(this).attr('value','');
 					$('.user-item').show();
 				}else{
-					var finduser = $(this).val();
+					var finduser = $(this).val().toLowerCase();
 					$('.user-item').each(function (el,item) {
 						user = $(item).text(); //attr('value');
 						if (user.toLowerCase().indexOf(finduser) >= 0) {
@@ -593,7 +811,7 @@ class sellerevents_eventedit {
 					$(this).attr('value','');
 					$('.user_c-item').show();
 				}else{
-					var finduser = $(this).val();
+					var finduser = $(this).val().toLowerCase();
 					$('.user_c-item').each(function (el,item) {
 						user = $(item).text(); //attr('value');
 						if (user.toLowerCase().indexOf(finduser) >= 0) {
@@ -636,7 +854,7 @@ class sellerevents_eventedit {
 					$(this).attr('value','');
 					$('.seller-item').show();
 				}else{
-					var finduser = $(this).val();
+					var finduser = $(this).val().toLowerCase();
 					$('.seller-item').each(function (el,item) {
 						user = $(item).text(); //attr('value');
 						if (user.toLowerCase().indexOf(finduser) >= 0) {
@@ -679,7 +897,6 @@ class sellerevents_eventedit {
 					return true;
 				}
 			});
-
 
 			$('#addmore_event_obs').click(function() {
 				oldval = $('#event_obs_field_max').val();
@@ -744,11 +961,93 @@ class sellerevents_eventedit {
 			$(document).on("change",'#period', function() {
 				$('.scper').text( $(this).children('option[value="' + $(this).val() +'"]').text());
 			}); 
+			
+			$(document).on("click",'#add_newclient', function(e) {
+				if( jQuery('#psearchtext').val()!='' ){
+					openAddClientPopPup();
+				}else{
+					alert('<?php _e('Type the client name in the search field before Add New Client;', 'wpsellerevents' ) ?>');
+				}
+				e.preventDefault();
+				return false;
+			});	
 		});   // jQuery
+		
 		function delete_event_obs(row_id){
 			jQuery(row_id).fadeOut(); 
 			jQuery(row_id).remove();
 			jQuery('#msgdrag').html('<?php _e('Update Event to save changes.', 'wpsellerevents' ); ?>').fadeIn();
+		}
+		
+		function openAddClientPopPup() {
+//			jQuery('#addclient_popup').html(newHtml);
+			jQuery('#addclient_popup').fadeIn();
+			jQuery('#client_title').val( jQuery('#psearchtext').val() );
+			jQuery('#email').focus();
+			jQuery('#popup_addclient_background').fadeIn();
+
+			jQuery('#btn_cancel_client_popup').click(function(e){
+				jQuery('#addclient_popup').fadeOut();
+				jQuery('#popup_addclient_background').fadeOut();
+//				jQuery('#addclient_popup').html('');
+				e.preventDefault();
+				return false;
+			});
+			jQuery('#accept_client').click(function(e){
+				var error = false;
+				if (!error && jQuery('#client_title').val() == '') {
+					alert('<?php _e('Type the client name in the search field before Add New Client;') ?>');
+					jQuery('#client_title').focus();
+					error = true;
+				}
+
+				if (!error) {	// Add client to database!! AJAX					
+					jQuery.ajaxSetup({async:false});
+					var data = {
+						wpaddclient_nonce : jQuery("input[name='wpsellerevents_nonce']").val(),
+						client_title: jQuery("input[name='client_title']").val(),
+						email		: jQuery("input[name='email']").val(),
+						address		: jQuery("input[name='address']").val(),
+						phone		: jQuery("input[name='phone']").val(),
+						cellular	: jQuery("input[name='cellular']").val(),
+						facebook	: jQuery("input[name='facebook']").val(),
+						user_aseller: jQuery("input[name='user_aseller']").val(),
+						action		: "add_ajaxclient"
+					};
+					jQuery.post(ajaxurl, data, function(response){
+						if( response.success ){
+							status='success';  //then submit campaign
+							jQuery('#fieldserror').remove();
+							jQuery("#poststuff").prepend('<div id="fieldserror" class="updated fade"><p>'+response.message +'</p></div>');
+							jQuery("#customers-list").append('<li id="'+response.client_id +'">'+data.client_title +' :: '+data.email +'</div>');
+							load_user_fromlist( data.client_title +' :: '+data.email, response.client_id );
+							jQuery("input[name='client_title']").val('');
+							jQuery("input[name='email']").val('');
+							jQuery("input[name='address']").val('');
+							jQuery("input[name='phone']").val('');
+							jQuery("input[name='cellular']").val('');
+							jQuery("input[name='facebook']").val('');
+							jQuery("input[name='user_aseller']").val('');
+						}else{
+							status='error';
+							jQuery('#fieldserror').remove();
+							jQuery("#poststuff").prepend('<div id="fieldserror" class="error fade"><p>ERROR: '+response.message +'</p></div>');
+							jQuery('#wpcontent .ajax-loading').attr('style',' visibility: hidden;');
+						}
+					});					
+					if(status == 'error') {
+						e.preventDefault();
+					} else {
+						//return true; 
+					}
+					
+					jQuery('#addclient_popup').fadeOut();
+					jQuery('#popup_addclient_background').fadeOut();
+				}
+				e.preventDefault();
+				return false;
+			});
+
 		}
 		</script>
 		<?php

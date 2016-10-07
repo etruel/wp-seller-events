@@ -157,12 +157,12 @@ class WPSellerEvents_functions {
 		if($postarr['post_status'] == 'auto-draft') return $data;
 		if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || (defined('DOING_AJAX') && DOING_AJAX) || isset($postarr['bulk_edit']))
 			return $data;		
-
+		$postarr['seller_id'] = (isset($postarr['seller_id']) && !empty($postarr['seller_id']) ) ? $postarr['seller_id'] : 0;
 		if(!current_user_can('wpse_seller')){ 
-			$data['post_author'] = (int)$_POST['seller_id'];
-			$_POST['post_author'] = (int)$_POST['seller_id'];
+			$data['post_author'] = (int)$postarr['seller_id'];
+			$postarr['post_author'] = (int)$postarr['seller_id'];
 		}else {
-			$_POST['seller_id']	= $data['post_author'];
+			$postarr['seller_id']	= $data['post_author'];
 		}
 		return $data;
 	}

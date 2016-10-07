@@ -6,7 +6,7 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 
 $WPSE_Licenser = new WPSE_Licenser();
 class WPSE_Licenser {
-	const STORE_URL = 'http://etruel.com';
+	const STORE_URL = 'https://etruel.com';
 	const AUTHOR = 'Esteban Truelsegaard';
 
 	private static $name = '';
@@ -58,8 +58,8 @@ class WPSE_Licenser {
 		$status 	= get_option( 'wpse_license_status' );
 		?>
 		<div class="wrap">
-			<img src="<?php echo WPSellerEvents :: $uri; ?>images/logo.jpg" alt="" style="float: left;">
-			<div style="float: left;padding: 30px;">
+			<img src="<?php echo WPSellerEvents :: $uri; ?>images/logo.jpg" alt="" width="" style="float: none;clear: both;">
+			<div style="float: none;padding: 30px;">
 				<h2><?php _e('Plugin License Options', 'wpsellerevents'); ?></h2>
 				<form method="post" action="options.php">
 					<?php settings_fields('wpse_license'); ?>

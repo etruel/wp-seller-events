@@ -3,7 +3,7 @@
  Plugin Name: WP-Seller Events
  Plugin URI: http://etruel.com
  Description: Customer Relationship Management. Follow your salesmen to get a good workgroup and better results.
- Version: 1.2.2
+ Version: 1.3
  Author: etruel <esteban@netmdp.com>
  Author URI: http://www.netmdp.com
  */
@@ -42,7 +42,7 @@ register_uninstall_hook( plugin_basename( __FILE__ ), array( 'WPSellerEvents', '
 
 if ( !class_exists( 'WPSellerEvents' ) ) {
 	class WPSellerEvents extends WPSellerEvents_functions {
-		const STORE_URL = 'http://etruel.com';
+		const STORE_URL = 'https://etruel.com';
 		const TEXTDOMAIN = 'wpsellerevents';
 		const AUTHOR = 'Esteban Truelsegaard';
 		const OPTION_KEY = 'WPSe_Options';
@@ -169,7 +169,6 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 				'success' => __('Successfully Operation', WPSellerEvents :: TEXTDOMAIN ),
 				'closed'  => __('Closed', WPSellerEvents :: TEXTDOMAIN ),
 			);
-
 			
 			new self( TRUE );
 		}
@@ -244,7 +243,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 
 		public static function wpse_login_redirect($redirect_url, $POST_redirect_url, $user) {
 			if ( isset($user->ID) and ( user_can($user, 'wpse_manager') || user_can($user, 'wpse_seller') ) ) {
-				return admin_url('edit.php?post_type=wpsellerevents');
+				return admin_url('edit.php?post_type=wpsellerevents&event_status=open');
 			}
 			return $redirect_url;
 		}

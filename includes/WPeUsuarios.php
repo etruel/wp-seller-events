@@ -200,7 +200,7 @@ class WPeUsuarios {
 	public static function only_profile_user_css() {
 		global $post;
 		?><style type="text/css">
-			form#your-profile {display: none;}
+			/* form#your-profile {display: none;} */
 			h3 {background-color: #6EDA67;padding: 10px;}
 			.hide {display: none;}
 			#msgdrag {display:none;color:red;padding: 0 0 0 20px;font-weight: 600;font-size: 1em;}

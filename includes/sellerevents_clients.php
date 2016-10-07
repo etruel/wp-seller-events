@@ -209,7 +209,7 @@ class sellerevents_clients {
 			);
 		}
 		$client_data['user_contacts']= $user_contacts;
-		$client_data['user_aseller']= $options['user_aseller'];
+		$client_data['user_aseller']= (isset($options['user_aseller'])) ? $options['user_aseller'] : 0 ;
 
 		return $client_data;
 	}
@@ -225,6 +225,7 @@ class sellerevents_clients {
 				return false;
 			}
 		}
+		$client_data = array();
 		$custom_fields = get_post_custom($client_id) ;
 		foreach ( $custom_fields as $field_key => $field_values ) {
 			if(!isset($field_values[0])) continue;

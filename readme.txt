@@ -3,8 +3,8 @@ Contributors: etruel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B8V39NWK3NFQU
 Tags: Sell, Post, posts, admin, aggregation, bot, content, cron, follow, reports, seller, buyer, sales
 Requires at least: 3.9
-Tested up to: 4.3
-Stable tag: 1.2.2
+Tested up to: 4.7
+Stable tag: 1.3
 
 Customer Relationship Management. Follow your salesmen to get a good workgroup and better results.
 
@@ -47,6 +47,15 @@ You can either install it automatically from the WordPress admin, or do it manua
 3. Editing event.
 
 == Changelog ==
+
+= 1.3 =
+* Moved the client area in event edit to top.
+* Takes out the editor area in the event creation screen. Many other cosmetic and useful changes.
+* New button to add a Client from Events-edit screen.
+* Fixes the display of client contacts when are empty.
+* Fixes the "Create Child Event" link to redirects to edit the new child event.
+* Fixes a profile hidden page since WP 4.6.
+* Fixes some PHP notices.
 
 = 1.2.2 =
 * Fixed columns on clients list.  Deletes all other columns not related with plugin.

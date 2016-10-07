@@ -101,7 +101,7 @@ class sellerevent_posttype {
 			'capability_type' => array('sellerevent','sellerevents'),
 			'capabilities' => $capabilities,
 			'taxonomies' => array( 'eventype' ),
-			'supports' => array( 'title', 'editor' ) 
+			'supports' => array( 'title' )  // removed 'editor'
 		); 
 		  register_post_type('wpsellerevents',$args);
 
@@ -213,7 +213,7 @@ class sellerevent_posttype {
 						$status = __('Missed', WPSellerEvents :: TEXTDOMAIN );
 					}				
 				}else{
-					echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun);
+					$status = __('Alert on', WPSellerEvents :: TEXTDOMAIN ) .' '. date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun);
 				}
 
 			} else {
@@ -579,7 +579,7 @@ class sellerevent_posttype {
 		<?php
 	}	
 
-	public static function copy_duplicate_event($post, $status = '', $parent_id = '') {
+	public static function copy_duplicate_event($post, &$status = '', $parent_id = '') {
 		// We don't want to clone revisions
 		if ($post->post_type != 'wpsellerevents') return;
 		$prefix = "";
