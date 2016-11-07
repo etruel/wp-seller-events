@@ -95,8 +95,11 @@ class sellerevents_eventedit {
 		if(!current_user_can('wpse_seller')){
 			add_meta_box( 'seller-box', __('Salesman', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__  ,'seller_box' ),'wpsellerevents','side', 'default' );
 		}
-		//add_action('post_submitbox_minor_actions', array( __CLASS__ ,'options_box'));
 		
+		if($cfg['editor_type']=="Basic"){
+			add_action('post_submitbox_minor_actions', array( __CLASS__ ,'options_box'));
+		}
+
 		add_meta_box( 'status-box', __('Event Status', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'status_box' ),'wpsellerevents','side', 'high' );
 		add_meta_box( 'obs-box', __('Observations', WPSellerEvents :: TEXTDOMAIN ), array( __CLASS__  ,'obs_box' ),'wpsellerevents','normal', 'default' );
 		
