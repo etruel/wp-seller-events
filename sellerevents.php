@@ -21,6 +21,7 @@ include_once('includes/sellerevent_posttype.php');
 include_once('includes/sellerevents_clients.php');
 include_once('includes/sellerevents_eventypes.php');
 include_once('includes/sellerevents_segments.php');
+include_once('includes/sellerevents_example.php');
 include_once('includes/sellerevents_channels.php');
 include_once('includes/sellerevents_interests.php');
 include_once('includes/WPeUsuarios.php');
@@ -88,6 +89,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 			'edit_wpse_eventypes' => true,
 			'edit_wpse_settings' => true,
 			'edit_wpse_segments' => true,
+			'edit_wpse_example' => true,
 			'edit_wpse_interests' => true,
 			'edit_wpse_channels' => true, 
 			// more standard capabilities here
@@ -136,6 +138,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 			'edit_wpse_eventypes' => true,
 //			'edit_wpse_settings' => true,
 			'edit_wpse_segments' => true,
+			'edit_wpse_example' => true,
 			'edit_wpse_interests' => true,
 			'edit_wpse_channels' => true, 
 			// more standard capabilities here
@@ -189,6 +192,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 			new sellerevents_eventypes();
 			new sellerevents_clients(); 
 			new sellerevents_segments();
+			new sellerevents_example();
 			new sellerevents_interests();
 			new sellerevents_channels();
 			//new WPeUsuarios(WPSellerEvents :: TEXTDOMAIN);
@@ -443,6 +447,18 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 			);
 			add_action( 'admin_print_styles-' . $page, array(&$this, 'wpse_admin_styles') );
 
+			//example
+			//Segments
+			$page = add_submenu_page(
+				'edit.php?post_type=wpsellerevents',
+				__( 'Client Example', self :: TEXTDOMAIN ),
+				__( 'Example', self :: TEXTDOMAIN ),
+				'edit_wpse_client',
+				'edit-tags.php?taxonomy=example'
+			);
+			add_action( 'admin_print_styles-' . $page, array(&$this, 'wpse_admin_styles') );
+
+
 			//Interests
 			$page = add_submenu_page(
 				'edit.php?post_type=wpsellerevents',
@@ -611,7 +627,8 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 			$cfg['roles_widget']	= (!isset($options['roles_widget']) || !is_array($options['roles_widget'])) ? array( "administrator" => "administrator", "wpse_manager" => "wpse_manager" ): $options['roles_widget'];
 			$cfg['disablewpcron']	= (!isset($options['disablewpcron']) || empty($options['disablewpcron'])) ? false: ($options['disablewpcron']==1) ? true : false;
 			$cfg['dateformat']	= (!isset($options['dateformat'])) ? 'm/d/Y': $options['dateformat'];
-
+			$cfg['consideration_days'] = (!isset($options['consideration_days'])) ? '': $options['consideration_days'];
+			$cfg['editor_type'] =  (!isset($options['editor_type'])) ? '': $options['editor_type'];
 			return $cfg;
 		}
 		

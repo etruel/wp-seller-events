@@ -54,7 +54,22 @@ foreach($helptip as $key => $value){
 					<span class="coderr b"><i> php -q <?php echo ABSPATH.'wp-cron.php'; ?></i></span><br /> 
 					<?php _e('or URL:', self :: TEXTDOMAIN ); ?> &nbsp;&nbsp;&nbsp;<span class="coderr b"><i><?php echo trailingslashit(get_option('siteurl')).'wp-cron.php'; ?></i></span></div><br /> 
 				</div>
-			</div>				
+			</div>		
+
+			<div id="dias_considerar" class="postbox">
+				<h3 class="hndle">Event Settings</h3>
+				<div class="inside">
+					<strong><?php _e('Limit days to consider report (1-999) (1-999)', self :: TEXTDOMAIN); ?></strong>
+					<br>
+					<input value="<?php print($cfg['consideration_days']); ?>" type="text" name="consideration_days">
+				</div>
+				<div class="inside">
+					<strong>Editor Type:</strong>
+					Basic:<input type="radio" <?php if($cfg['editor_type']=='Basic') print("checked"); ?>  name="editor_type" value="Basic">
+					<br>
+					Advanced:<input <?php if($cfg['editor_type']=='Advanced') print("checked"); ?> type="radio" name="editor_type" value="Advanced">
+				</div>
+			</div>			
 				
 			<div class="postbox inside">
 				<div class="inside">

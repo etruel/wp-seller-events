@@ -99,7 +99,10 @@ class sellerevents_eventedit {
 		
 		add_meta_box( 'status-box', __('Event Status', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'status_box' ),'wpsellerevents','side', 'high' );
 		add_meta_box( 'obs-box', __('Observations', WPSellerEvents :: TEXTDOMAIN ), array( __CLASS__  ,'obs_box' ),'wpsellerevents','normal', 'default' );
-		//add_meta_box( 'options-box', __('Options for this event', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'options_box' ),'wpsellerevents','normal', 'default' );
+		
+		if($cfg['editor_type']!="Basic"){
+			add_meta_box( 'options-box', __('Options for this event', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'options_box' ),'wpsellerevents','normal', 'default' );
+		}
 	}		
 
 			//*************************************************************************************
@@ -190,18 +193,18 @@ class sellerevents_eventedit {
 			<input class="fieldate" type="text" name="fromdate" value="<?php 
 				echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate ); 				
 				?>" id="fromdate"/>&nbsp; &nbsp; 
-		<?php /*
+		
 			<b><?php echo '<label for="todate">' . __('To Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
 			<input class="fieldate" type="text" name="todate" value="<?php 
 				echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $todate );
 				?>" id="todate"/>
 			 <br />		 
 			<span class="description"><?php _e('Insert the start and end dates from this event.', WPSellerEvents :: TEXTDOMAIN ); ?></span>
-		 */ ?>
+		
 			<br />		 
 			<span class="description"><?php _e('Insert the date for this event.', WPSellerEvents :: TEXTDOMAIN ); ?></span>
 		</p>
-<div style="display:none;">
+<div>
 		<b><?php echo __('Alarm Type', WPSellerEvents :: TEXTDOMAIN ); ?>: </b><br/>
 		
 		<b><label for="quantity"><?php _e( 'Quantity', WPSellerEvents :: TEXTDOMAIN ); ?></label>: </b>
@@ -238,7 +241,7 @@ class sellerevents_eventedit {
 		</div>
 		
 		<?php
-	}
+	}//closed option box
 	
 	public static function obs_box( $post ) {  
 		global $post, $event_data, $cfg;
