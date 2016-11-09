@@ -267,69 +267,11 @@ class sellerevent_posttype {
 				//$allsellers = get_users( array( 'role' => 'wpse_seller' ) );
 				// Array of stdClass objects.
 				//register script
-				
-			
-				
+					
 				?>
-				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.min.js"></script>
-				<script type="text/javascript" src="https://rawgit.com/someatoms/jsPDF-AutoTable/master/dist/jspdf.plugin.autotable.js"></script>			
-				<script>
-				var table_simple = "";
-				function generate(myid) {
-
-				  var doc = new jsPDF('p', 'pt');
-				  var res = doc.autoTableHtmlToJson(document.getElementById(myid));
-				 // doc.autoTable(res.columns, res.data, {margin: {top: 80}});
-
-				  var header = function(data) {
-				    doc.setFontSize(18);
-				    doc.setTextColor(40);
-				    doc.setFontStyle('normal');
-				    //doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
-				    doc.text("Listado de Eventos", data.settings.margin.left, 50);
-				  };
-
-				  function footer(){ 
-				  	 	doc.setFontSize(10);
-				    	doc.setTextColor(40);
-					    doc.text(100,800, 'WP-Seller Events by etruel.com'); //print number bottom right
-					    doc.page ++;
-				  };
-
-				  var options = {
-				    beforePageContent: header,
-				    margin: {
-				      top: 80
-				    },
-				    startY: /*doc.autoTableEndPosY() + 80*/ 80
-				  };
-
-				  doc.autoTable(res.columns, res.data, options);
-				  footer();
-				  //doc.save("table.pdf");
-				  doc.output("dataurlnewwindow");
-
-				}
-				jQuery(document).ready(function(){
-					jQuery(document).on('click','#printButtonPDF',function(){
-						myid = jQuery(".wp-list-table").attr("id");
-						printtable = jQuery(".wp-list-table").clone();
-						printtable.css({'display':'none'});
-						printtable.attr("id","example");
-						printtable.find('thead tr td').remove();
-						printtable.find('tbody tr th').remove();
-						printtable.find('tbody tr td div').remove();
-						printtable.find('tbody tr td button').remove();
-						printtable.find('tfoot').remove();
-						jQuery('body').append(printtable);
-						generate(printtable.attr("id"));
-						printtable.remove();
-
-					});
-				});	
-				</script>
-
-
+				<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.min.js"></script>
+				<script type="text/javascript" src="https://rawgit.com/someatoms/jsPDF-AutoTable/master/dist/jspdf.plugin.autotable.js"></script>-->			
+				<!--<script></script>-->
 				<div style="display: inline-block;"><select id="seller" name="seller">
 						<option value="0" class="seller-item"><?php _e('All Sellers', WPSellerEvents :: TEXTDOMAIN ); ?></option>
 					<?php
@@ -543,7 +485,18 @@ class sellerevent_posttype {
 			wp_register_script('jquery-datetimepicker', WPSellerEvents::$uri .'js/jquery.datetimepicker.js', array('jquery'));
 			wp_enqueue_script('jquery-datetimepicker');
 
-			
+			//register jspdf and autotable
+			wp_register_script('seller_events_jspdf',WPSellerEvents::$uri.'js/jspdf.min.js',array('jquery'));
+			wp_enqueue_script('seller_events_jspdf');
+
+			wp_register_script('seller_events_autotable',WPSellerEvents::$uri.'js/jspdf.plugin.autotable.js',array('jquery','seller_events_jspdf'));
+			wp_enqueue_script('seller_events_autotable');
+
+			wp_register_script('seller_print_report_wp',WPSellerEvents::$uri.'js/print_report_wp.js',array('jquery','seller_events_jspdf','seller_events_autotable'));
+			wp_enqueue_script('seller_print_report_wp');
+
+
+				
     		add_action('admin_head', array( __CLASS__ ,'events_list_admin_head'));
 		}
 	}
