@@ -28,6 +28,23 @@ foreach($helptip as $key => $value){
 			<div id="post-body-content">
 				<div id="normal-sortables" class="meta-box-sortables ui-sortable">
 		
+
+				<div id="dias_considerar" class="postbox">
+				<h3 class="hndle">Event Settings</h3>
+				<div class="inside">
+					<strong><?php _e('Limit days to consider report', self :: TEXTDOMAIN); ?></strong>
+					<br>
+					<input value="<?php print($cfg['consideration_days']); ?>" type="number" name="consideration_days">
+				</div>
+				<div class="inside">
+					<strong>Editor Type:</strong>
+					<br>
+					<input type="radio" <?php if($cfg['editor_type']=='Basic') print("checked"); ?>  name="editor_type" value="Basic">Basic
+					<br>
+					<input <?php if($cfg['editor_type']=='Advanced') print("checked"); ?> type="radio" name="editor_type" value="Advanced">Advanced
+				</div>
+			</div>
+
 			<div id="enablefeatures" class="postbox">
 				<h3 class="hndle"><span><?php _e('Global Settings', self :: TEXTDOMAIN ); ?></span></h3>
 				<div class="inside"> 
@@ -56,20 +73,7 @@ foreach($helptip as $key => $value){
 				</div>
 			</div>		
 
-			<div id="dias_considerar" class="postbox">
-				<h3 class="hndle">Event Settings</h3>
-				<div class="inside">
-					<strong><?php _e('Limit days to consider report (1-999) (1-999)', self :: TEXTDOMAIN); ?></strong>
-					<br>
-					<input value="<?php print($cfg['consideration_days']); ?>" type="text" name="consideration_days">
-				</div>
-				<div class="inside">
-					<strong>Editor Type:</strong>
-					Basic:<input type="radio" <?php if($cfg['editor_type']=='Basic') print("checked"); ?>  name="editor_type" value="Basic">
-					<br>
-					Advanced:<input <?php if($cfg['editor_type']=='Advanced') print("checked"); ?> type="radio" name="editor_type" value="Advanced">
-				</div>
-			</div>			
+					
 				
 			<div class="postbox inside">
 				<div class="inside">

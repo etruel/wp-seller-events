@@ -271,7 +271,6 @@ class sellerevent_posttype {
 			
 				
 				?>
-				<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.min.js"></script>
 				<script type="text/javascript" src="https://rawgit.com/someatoms/jsPDF-AutoTable/master/dist/jspdf.plugin.autotable.js"></script>			
 				<script>
@@ -290,6 +289,13 @@ class sellerevent_posttype {
 				    doc.text("Listado de Eventos", data.settings.margin.left, 50);
 				  };
 
+				  function footer(){ 
+				  	 	doc.setFontSize(10);
+				    	doc.setTextColor(40);
+					    doc.text(100,800, 'WP-Seller Events by etruel.com'); //print number bottom right
+					    doc.page ++;
+				  };
+
 				  var options = {
 				    beforePageContent: header,
 				    margin: {
@@ -299,15 +305,15 @@ class sellerevent_posttype {
 				  };
 
 				  doc.autoTable(res.columns, res.data, options);
-
+				  footer();
 				  //doc.save("table.pdf");
 				  doc.output("dataurlnewwindow");
 
 				}
-				$(document).ready(function(){
-					$(document).on('click','#printButtonPDF',function(){
-						myid = $(".wp-list-table").attr("id");
-						printtable = $(".wp-list-table").clone();
+				jQuery(document).ready(function(){
+					jQuery(document).on('click','#printButtonPDF',function(){
+						myid = jQuery(".wp-list-table").attr("id");
+						printtable = jQuery(".wp-list-table").clone();
 						printtable.css({'display':'none'});
 						printtable.attr("id","example");
 						printtable.find('thead tr td').remove();
@@ -315,8 +321,9 @@ class sellerevent_posttype {
 						printtable.find('tbody tr td div').remove();
 						printtable.find('tbody tr td button').remove();
 						printtable.find('tfoot').remove();
-						$('body').append(printtable);
+						jQuery('body').append(printtable);
 						generate(printtable.attr("id"));
+						printtable.remove();
 
 					});
 				});	
@@ -391,7 +398,7 @@ class sellerevent_posttype {
 		<!--pdf jspdf-->
 		
 
-		<input type="button" id="printButtonPDF" class="button" value="<?php _e('Print PDF',WPSellerEvents :: TEXTDOMAIN); ?>">
+		<input type="button" id="printButtonPDF" class="button right" value="<?php _e('Print PDF',WPSellerEvents :: TEXTDOMAIN); ?>">
 		<?php
 
 	}
