@@ -179,6 +179,8 @@ class sellerevents_clients {
 		$client_data['phone']	= (!isset($options['phone']))	? '' : $options['phone'];
 		$client_data['cellular']= (!isset($options['cellular']))? '' : $options['cellular'];
 		$client_data['facebook']= (!isset($options['facebook']))? '' : $options['facebook'];
+		$client_data['user-null-interests']= (!isset($options['user-null-interests']))? '' : $options['user-null-interests'];
+
 
 		$user_contacts = (!isset($options['user_contacts']))? Array() : $options['user_contacts'];
 		// Proceso los array sacando los que estan en blanco

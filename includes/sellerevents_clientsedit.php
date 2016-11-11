@@ -112,6 +112,10 @@ class sellerevents_clientsedit {
 			<th><label for="facebook"><?php _e("Facebook URL", WPSellerEvents :: TEXTDOMAIN ) ?>	</label></th>
 			<td><input type="text" name="facebook" id="facebook" value="<?php echo $client_data['facebook'] ?>" class="regular-text"></td>
 		</tr>
+		<tr class="user-null-interests-wrap">
+			<th><label for="user-null-interests"><?php _e("Null client for the Report of Interests",WPSellerEvents :: TEXTDOMAIN) ?></label></th>
+			<td><input type="checkbox" name="user-null-interests" value="yes" <?php if($client_data['user-null-interests']=="yes")  print("checked"); ?>></td>
+		</tr>
 		</tbody></table>
 		<?php
 	}
