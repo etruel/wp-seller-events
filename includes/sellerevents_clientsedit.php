@@ -114,7 +114,7 @@ class sellerevents_clientsedit {
 		</tr>
 		<tr class="user-null-interests-wrap">
 			<th><label for="user-null-interests"><?php _e("Null client for the Report of Interests",WPSellerEvents :: TEXTDOMAIN) ?></label></th>
-			<td><input type="checkbox" name="user-null-interests" value="yes" <?php if($client_data['user-null-interests']=="yes")  print("checked"); ?>></td>
+			<td><input type="checkbox" name="user-null-interests" value="yes" <?php checked($client_data['user-null-interests'], "yes"); ?>></td>
 		</tr>
 		</tbody></table>
 		<?php

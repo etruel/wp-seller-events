@@ -1,16 +1,19 @@
 <?php
-	//functions 
-	//formulated  days passed
-	function days_passed($date_1,$date_2)
-	{
+// don't load directly 
+if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
+	exit();
+}
+
+//functions 
+//formulated  days passed
+	function days_passed($date_1,$date_2) {
 		$days	= (strtotime($date_1)-strtotime($date_2))/86400;
 		$days 	= abs($days); $days = floor($days);		
 		return $days;
 	}
-?>
-
-
-<?php 	
+?><?php 	
 	//formulated for events triggered by days to consider 
 	$cfg = $this->check_options($this->options);
 	$consideration_days = $cfg['consideration_days'];

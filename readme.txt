@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Sell, Post, posts, admin, aggregation, bot, content, cron, follow, reports, seller, buyer, sales
 Requires at least: 3.9
 Tested up to: 4.7
-Stable tag: 1.3
+Stable tag: 1.4
 
 Customer Relationship Management. Follow your salesmen to get a good workgroup and better results.
 
@@ -47,6 +47,11 @@ You can either install it automatically from the WordPress admin, or do it manua
 3. Editing event.
 
 == Changelog ==
+
+= 1.4 =
+* Added two modes, Basic, and Advanced for the events load to allow the missed fields in 1.3 version.
+* Add a button to print to PDF the pages of the events list.
+* Added a Report of Interests to see the abandoned clients that have a past event.
 
 = 1.3 =
 * Moved the client area in event edit to top.
