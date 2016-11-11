@@ -82,11 +82,11 @@ class sellerevents_eventedit {
 	}
 	
 	public static function create_meta_boxes() {
-		global $post,$event_data, $cfg;
+		global $post,$event_data, $wpsecfg;
 		$event_data = WPSellerEvents :: get_event($post->ID);
 		$event_data = apply_filters('wpse_check_eventdata', $event_data);
-		$cfg = get_option(WPSellerEvents :: OPTION_KEY);
-		$cfg = apply_filters('wpse_check_options', $cfg);
+		$wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
+		$wpsecfg = apply_filters('wpse_check_options', $wpsecfg);
 		
 		// Remove Custom Fields Metabox
 		//remove_meta_box( 'postcustom','wpsellerevents','normal' ); 
@@ -96,21 +96,21 @@ class sellerevents_eventedit {
 			add_meta_box( 'seller-box', __('Salesman', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__  ,'seller_box' ),'wpsellerevents','side', 'default' );
 		}
 		
-		if($cfg['editor_type']=="Basic"){
+		if($wpsecfg['editor_type']=="Basic"){
 			add_action('post_submitbox_minor_actions', array( __CLASS__ ,'options_box'));
 		}
 
 		add_meta_box( 'status-box', __('Event Status', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'status_box' ),'wpsellerevents','side', 'high' );
 		add_meta_box( 'obs-box', __('Observations', WPSellerEvents :: TEXTDOMAIN ), array( __CLASS__  ,'obs_box' ),'wpsellerevents','normal', 'default' );
 		
-		if($cfg['editor_type']!="Basic"){
+		if($wpsecfg['editor_type']!="Basic"){
 			add_meta_box( 'options-box', __('Options for this event', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__ ,'options_box' ),'wpsellerevents','normal', 'default' );
 		}
 	}		
 
 			//*************************************************************************************
 	public static function status_box( $post ) {  
-		global $post, $event_data, $cfg, $current_user;
+		global $post, $event_data, $wpsecfg, $current_user;
 		$event_status = $event_data['event_status'];
 		$allevent_status = WPSellerEvents :: $event_statuses;
 		?>
@@ -126,7 +126,7 @@ class sellerevents_eventedit {
 		
 			//*************************************************************************************
 	public static function seller_box( $post ) {  
-		global $post, $event_data, $cfg, $current_user;
+		global $post, $event_data, $wpsecfg, $current_user;
 		$seller_id = $event_data['seller_id'];
 		if(isset($seller_id) && ($seller_id>0) ) { // if already set takes the value 
 			$seller = get_userdata( $seller_id );
@@ -180,7 +180,7 @@ class sellerevents_eventedit {
 	
 		//*************************************************************************************
 	public static function options_box( $post ) {  
-		global $post, $event_data, $cfg;
+		global $post, $event_data, $wpsecfg;
 		$fromdate = $event_data['fromdate'];
 		$todate = $event_data['todate'];
 		$quantity = $event_data['quantity'];
@@ -194,12 +194,12 @@ class sellerevents_eventedit {
 		<div style="text-align:left;">
 		<p><b><?php echo '<label for="fromdate">' . __('Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
 			<input class="fieldate" type="text" name="fromdate" value="<?php 
-				echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate ); 				
+				echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate ); 				
 				?>" id="fromdate"/>&nbsp; &nbsp; 
 		
 			<b><?php echo '<label for="todate">' . __('To Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
 			<input class="fieldate" type="text" name="todate" value="<?php 
-				echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $todate );
+				echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $todate );
 				?>" id="todate"/>
 			 <br />		 
 			<span class="description"><?php _e('Insert the start and end dates from this event.', WPSellerEvents :: TEXTDOMAIN ); ?></span>
@@ -227,7 +227,7 @@ class sellerevents_eventedit {
 						__('Select a period for this event.  An email will be sent to the Seller on <span class="b scqty">%1s</span> <span class="b scper">%2s</span> before <span class="b scfrd">%3s</span>.', WPSellerEvents :: TEXTDOMAIN ),
 							$quantity,
 							$period,
-							date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate )
+							date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate )
 					);
 				?>
 			</span>
@@ -236,7 +236,7 @@ class sellerevents_eventedit {
 		<p>
 			<input class="checkbox" value="1" type="checkbox" <?php checked($activated,true); ?> name="activated" id="activated" /> <label for="activated"><b><?php _e('Activate Alarm', WPSellerEvents :: TEXTDOMAIN ); ?></b></label>
 			<br />
-			&nbsp; &nbsp; <?php echo ' <span class="b" id="alertdate">'. date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun).'</span>';	?>
+			&nbsp; &nbsp; <?php echo ' <span class="b" id="alertdate">'. date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun).'</span>';	?>
 			<br />
 			&nbsp; &nbsp; <?php _e('Save event to refresh.', WPSellerEvents :: TEXTDOMAIN ); ?>
 			<br />
@@ -247,7 +247,7 @@ class sellerevents_eventedit {
 	}//closed option box
 	
 	public static function obs_box( $post ) {  
-		global $post, $event_data, $cfg;
+		global $post, $event_data, $wpsecfg;
 
 		$client_id = $event_data['customer_id'];
 		if(isset($client_id) && ($client_id>0) ) {
@@ -435,7 +435,7 @@ class sellerevents_eventedit {
 									<div class="sorthandle"> </div> <!-- sort handle -->
 									<div class="event_obs_date_column" id="">
 										<input name="event_obs[date][<?php echo $i; ?>]" type="text" value="<?php
-										echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ),
+										echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ),
 												//(!isset($event_obs['date'][$i])) ? time()+(int)get_option( 'gmt_offset' )*3600 : $event_obs['date'][$i] 
 												(!isset($event_obs['date'][$i])) ? current_time('timestamp')  : $event_obs['date'][$i] 
 												);
@@ -483,11 +483,11 @@ class sellerevents_eventedit {
 
 	public static function getEvenTypeAttr() { //Ajax action
 		if(!isset($_POST['eventype_ID'])) die('ERROR: ID no encontrado.');
-		$cfg = get_option(WPSellerEvents :: OPTION_KEY);
-		$cfg = apply_filters('wpse_check_options', $cfg);
+		$wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
+		$wpsecfg = apply_filters('wpse_check_options', $wpsecfg);
 
 		$t_id = $_POST['eventype_ID'];
-		$fromdate = WPSellerEvents::date2time($_POST['fromdate'], $cfg['dateformat'].' '.get_option('time_format') );
+		$fromdate = WPSellerEvents::date2time($_POST['fromdate'], $wpsecfg['dateformat'].' '.get_option('time_format') );
 		if($term_meta = get_option( "eventype_$t_id" ))	{
 			switch($term_meta['period']) {
 			case 'minutes':
@@ -505,7 +505,7 @@ class sellerevents_eventedit {
  		    }
 		    $cronseconds = $term_meta['quantity'] * $seconds;
 		    $cronnextrun = $fromdate - $cronseconds ;
-		    $term_meta['alertdate'] = date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun);
+		    $term_meta['alertdate'] = date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun);
 		    if ( $cronnextrun <= current_time('timestamp') )
 			    $term_meta['alertdate'] = '---';   // reset vars to allow send mail with cron
 
@@ -663,7 +663,7 @@ class sellerevents_eventedit {
 	}
 	
 	public static function campaigns_admin_head_scripts() {
-		global $post, $cfg, $wp_locale, $locale;
+		global $post, $wpsecfg, $wp_locale, $locale;
 		if($post->post_type != 'wpsellerevents') return $post->ID;
 		$post->post_password = '';
 		$visibility = 'public';
@@ -671,7 +671,7 @@ class sellerevents_eventedit {
 		//$duplicate = '<button style="background-color: #EB9600;" id="vinculate" class="button button-large" type="button">'. __('Create Child Event', WPSellerEvents :: TEXTDOMAIN ) . '';
 		$action = '?action=wpesellerevent_create_child&amp;post='.$post->ID;
 		$create_child = '<br /><a href="'. admin_url( "admin.php". $action ).'" title="' . esc_attr(__("Create Child Event", WPSellerEvents :: TEXTDOMAIN)) . '">' .  __('Create Child Event', WPSellerEvents :: TEXTDOMAIN) . '</a>';
-		//$cfg = get_option(WPSellerEvents :: OPTION_KEY);
+		//$wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
 		
 		?>
 		<script type="text/javascript" language="javascript">
@@ -924,8 +924,8 @@ class sellerevents_eventedit {
 				'lang'			=> substr($locale, 0, 2),
 				'UTC'			=> get_option( 'gmt_offset' ),
 				'timeFormat'    => get_option( 'time_format' ),
-				'dateFormat'    => self :: date_format_php_to_js( $cfg['dateformat'] ),
-				'printFormat'   => self :: date_format_php_to_js( $cfg['dateformat'] ).' '.get_option( 'time_format' ),
+				'dateFormat'    => self :: date_format_php_to_js( $wpsecfg['dateformat'] ),
+				'printFormat'   => self :: date_format_php_to_js( $wpsecfg['dateformat'] ).' '.get_option( 'time_format' ),
 				'firstDay'      => get_option( 'start_of_week' ),
 			);
 			echo "$('.datetimepicker').datetimepicker({

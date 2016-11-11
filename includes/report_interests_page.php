@@ -15,9 +15,10 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 	}
 ?><?php 	
 	//formulated for events triggered by days to consider 
-	$cfg = $this->check_options($this->options);
-	$consideration_days = $cfg['consideration_days'];
-	$date_now = date('Y/m/d');
+	$wpsecfg = $this->check_options($this->options);
+	$consideration_days = $wpsecfg['consideration_days'];
+	$date_now = date('d/m/Y h:i A');
+
 	//Query Arguments	
 	$args=array(
 		'order' => 'ASC', 
@@ -27,6 +28,7 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 	);
 	$my_query = null;
 	$my_query = new WP_Query($args);
+
 ?>
 
 <!--VIEW TEMPLATE-->
@@ -49,10 +51,14 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 		while ($my_query->have_posts()) : $my_query->the_post(); 
 			//get info events
 			$event_data = WPSellerEvents :: get_event (get_the_id()); 
+			//date event
+			$fromdate = date_i18n($wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $event_data['fromdate']);
+
 			//get info clients
 			$client_data = sellerevents_clients :: get_client_data($event_data['customer_id']);	
+			
 			//get how many days have passed since the firing of the alarm until the current date
-			$event_show_days = days_passed(get_the_time('Y/m/d'),$date_now);
+			$event_show_days = days_passed($fromdate,$date_now);
 
 			//corresponding conditions to see if we show the event in the list
 			if($client_data['user-null-interests']!="yes"){

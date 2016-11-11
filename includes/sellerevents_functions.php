@@ -64,8 +64,8 @@ class WPSellerEvents_functions {
     **/	
 	/************** CHECK DATA *************************************************/
 	public static function check_eventdata($post_data) { // initialize event or parses current data
-		global $post, $cfg;
-		if(is_null($cfg)) $cfg = get_option( WPSellerEvents :: OPTION_KEY);
+		global $post, $wpsecfg;
+		if(is_null($wpsecfg)) $wpsecfg = get_option( WPSellerEvents :: OPTION_KEY);
 		if(  (isset($post->ID) && $post->ID > 0) && (!isset($post_data['ID']) || $post_data['ID'] == 0 ) ) {
 			$eventdata['ID']=$post->ID;
 		}else{
@@ -89,15 +89,15 @@ class WPSellerEvents_functions {
 //		$eventdata['todate']	= (!isset($post_data[ 'todate' ]) ) ?  time()+((int)get_option( 'gmt_offset' )*3600)+(3600*24*7) : $post_data['todate'];
 		$post_data['fromdate']	= (!isset($post_data['fromdate']) ) ? current_time('timestamp')  : $post_data['fromdate'];
 		$post_data['todate']	= (!isset($post_data[ 'todate' ]) ) ? current_time('timestamp')+(3600) : $post_data['todate'];  //3600*24*7 = 7 dias
-		$eventdata['fromdate']	= (is_int( @$post_data['fromdate']) ) ? $post_data['fromdate'] : self::date2time($post_data['fromdate'], $cfg['dateformat'].' '.get_option('time_format') );
-		$eventdata['todate']	= (is_int( @$post_data['todate'] ) )  ? $post_data['todate'] : self::date2time($post_data['todate'],$cfg['dateformat'].' '.get_option('time_format') );
+		$eventdata['fromdate']	= (is_int( @$post_data['fromdate']) ) ? $post_data['fromdate'] : self::date2time($post_data['fromdate'], $wpsecfg['dateformat'].' '.get_option('time_format') );
+		$eventdata['todate']	= (is_int( @$post_data['todate'] ) )  ? $post_data['todate'] : self::date2time($post_data['todate'],$wpsecfg['dateformat'].' '.get_option('time_format') );
 
 		$eventdata['event_obs'] = array( 'text'=>array(),'date'=>array() );
 		if (!empty($post_data['event_obs']['text']) )
 			foreach($post_data['event_obs']['text'] as $key => $value) {
 				if( isset( $post_data['event_obs']['text'][$key]) && !empty( $post_data['event_obs']['text'][$key] ) ) {
 					$eventdata['event_obs']['text'][] = addslashes($post_data['event_obs']['text'][$key]);
-					$eventdata['event_obs']['date'][] = (is_int($post_data['event_obs']['date'][$key])) ? $post_data['event_obs']['date'][$key] : self::date2time($post_data['event_obs']['date'][$key], $cfg['dateformat'].' '.get_option('time_format') );
+					$eventdata['event_obs']['date'][] = (is_int($post_data['event_obs']['date'][$key])) ? $post_data['event_obs']['date'][$key] : self::date2time($post_data['event_obs']['date'][$key], $wpsecfg['dateformat'].' '.get_option('time_format') );
 				}
 			}
 
@@ -141,7 +141,7 @@ class WPSellerEvents_functions {
 		}
 		$cronseconds = $eventdata['quantity']*$seconds;
 		$eventdata['cronnextrun']= $eventdata['fromdate'] - $cronseconds ;
-		//$aa =date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $eventdata['cronnextrun']);
+		//$aa =date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $eventdata['cronnextrun']);
 		if ( $eventdata['cronnextrun'] <= current_time('timestamp') ) 
 			$eventdata['runtime'] = $eventdata['starttime'] = 0;   // reset vars to allow send mail with cron
 		
@@ -151,7 +151,7 @@ class WPSellerEvents_functions {
 		
 		//************************* GRABA CAMPAÑA *******************************************************
 	public static function filter_handler(  $data , $postarr  ) {
-		global $post, $cfg;
+		global $post, $wpsecfg;
 		//echo print_r($data,1)."<br>".	print_r($postarr,1)."<br>". print_r($post,1)."<br>";
 		if($postarr['post_type'] != 'wpsellerevents') return $data;
 		if($postarr['post_status'] == 'auto-draft') return $data;
@@ -168,7 +168,7 @@ class WPSellerEvents_functions {
 	}
 	
 	public static function save_eventdata( $post_id ) {
-		global $post, $cfg;
+		global $post, $wpsecfg;
 		if((defined('DOING_AJAX') && DOING_AJAX) || isset($_REQUEST['bulk_edit'])) {
 			//WPSellerEvents ::save_quick_edit_post($post_id);
 			return $post_id;

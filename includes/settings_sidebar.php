@@ -29,31 +29,31 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN')) {
 				<div class="postbox">
 					<h3 class="handle"><?php _e( 'Sending e-Mails', self :: TEXTDOMAIN );?></h3>
 					<div class="inside">
-						<p><b><?php _e('Sender Email:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailsndemail" type="text" value="<?php echo $cfg['mailsndemail'];?>" class="large-text" /></p>
-						<p><b><?php _e('Sender Name:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailsndname" type="text" value="<?php echo $cfg['mailsndname'];?>" class="large-text" /></p>
+						<p><b><?php _e('Sender Email:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailsndemail" type="text" value="<?php echo $wpsecfg['mailsndemail'];?>" class="large-text" /></p>
+						<p><b><?php _e('Sender Name:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailsndname" type="text" value="<?php echo $wpsecfg['mailsndname'];?>" class="large-text" /></p>
 						<p><b><?php _e('Send mail method:', self :: TEXTDOMAIN ); ?></b><br />
 						<?php 
 						echo '<select id="mailmethod" name="mailmethod">';
-						echo '<option value="mail"'.selected('mail',$cfg['mailmethod'],false).'>'.__('PHP: mail()', self :: TEXTDOMAIN ).'</option>';
-						//echo '<option value="Sendmail"'.selected('Sendmail',$cfg['mailmethod'],false).'>'.__('Sendmail', self :: TEXTDOMAIN ).'</option>';
-						echo '<option value="SMTP"'.selected('SMTP',$cfg['mailmethod'],false).'>'.__('SMTP', self :: TEXTDOMAIN ).'</option>';
+						echo '<option value="mail"'.selected('mail',$wpsecfg['mailmethod'],false).'>'.__('PHP: mail()', self :: TEXTDOMAIN ).'</option>';
+						//echo '<option value="Sendmail"'.selected('Sendmail',$wpsecfg['mailmethod'],false).'>'.__('Sendmail', self :: TEXTDOMAIN ).'</option>';
+						echo '<option value="SMTP"'.selected('SMTP',$wpsecfg['mailmethod'],false).'>'.__('SMTP', self :: TEXTDOMAIN ).'</option>';
 						echo '</select>';
 						?></p>
-						<label id="mailsendmail" <?php if ($cfg['mailmethod']!='Sendmail') echo 'style="display:none;"';?>>
+						<label id="mailsendmail" <?php if ($wpsecfg['mailmethod']!='Sendmail') echo 'style="display:none;"';?>>
 							<b><?php _e('Sendmail Path:', self :: TEXTDOMAIN ); ?></b><br />
-							<input name="mailsendmail" type="text" value="<?php echo $cfg['mailsendmail'];?>" class="large-text" /><br />
+							<input name="mailsendmail" type="text" value="<?php echo $wpsecfg['mailsendmail'];?>" class="large-text" /><br />
 						</label>
-						<label id="mailsmtp" <?php if ($cfg['mailmethod']!='SMTP') echo 'style="display:none;"';?>>
-							<b><?php _e('SMTP Hostname:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailhost" type="text" value="<?php echo $cfg['mailhost'];?>" class="large-text" /><br />
-							<b><?php _e('SMTP Port:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailport" type="text" value="<?php echo $cfg['mailport'];?>" class="small-text" /><br />
+						<label id="mailsmtp" <?php if ($wpsecfg['mailmethod']!='SMTP') echo 'style="display:none;"';?>>
+							<b><?php _e('SMTP Hostname:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailhost" type="text" value="<?php echo $wpsecfg['mailhost'];?>" class="large-text" /><br />
+							<b><?php _e('SMTP Port:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailport" type="text" value="<?php echo $wpsecfg['mailport'];?>" class="small-text" /><br />
 							<b><?php _e('SMTP Secure Connection:', self :: TEXTDOMAIN ); ?></b><br />
 							<select name="mailsecure">
-								<option value=""<?php selected('',$cfg['mailsecure'],true); ?>><?php _e('none', self :: TEXTDOMAIN ); ?></option>
-								<option value="ssl"<?php selected('ssl',$cfg['mailsecure'],true); ?>>SSL</option>
-								<option value="tls"<?php selected('tls',$cfg['mailsecure'],true); ?>>TLS</option>
+								<option value=""<?php selected('',$wpsecfg['mailsecure'],true); ?>><?php _e('none', self :: TEXTDOMAIN ); ?></option>
+								<option value="ssl"<?php selected('ssl',$wpsecfg['mailsecure'],true); ?>>SSL</option>
+								<option value="tls"<?php selected('tls',$wpsecfg['mailsecure'],true); ?>>TLS</option>
 							</select><br />
-							<b><?php _e('SMTP Username:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailuser" type="text" autocomplete="off" value="<?php echo $cfg['mailuser'];?>" class="user large-text" /><br />
-							<b><?php _e('SMTP Password:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailpass" type="password" value="<?php echo base64_decode($cfg['mailpass']);?>" class="password large-text" /><br />
+							<b><?php _e('SMTP Username:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailuser" type="text" autocomplete="off" value="<?php echo $wpsecfg['mailuser'];?>" class="user large-text" /><br />
+							<b><?php _e('SMTP Password:', self :: TEXTDOMAIN ); ?></b><br /><input name="mailpass" type="password" value="<?php echo base64_decode($wpsecfg['mailpass']);?>" class="password large-text" /><br />
 						</label>
 						<script type="text/javascript">
 							jQuery('#mailmethod').change(function() {
@@ -83,17 +83,17 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN')) {
 				<div id="enabledashboard" class="postbox">
 				<h3 class="hndle"><span><?php _e('Dashboard widget', self :: TEXTDOMAIN ); ?></span> <span class="mya4_sprite infoIco help_tip" title="<?php echo $helptip['disabledashboard']; ?>"></span></h3>
 				<div class="inside">
-					<label><input class="checkbox" value="1" type="checkbox" <?php checked($cfg['disabledashboard'],true); ?> name="disabledashboard" id="disabledashboard" /> <?php _e('Disable <b><i>Dashboard Widget</i></b>', self :: TEXTDOMAIN ); ?></label><br />
-					<div id="roles" <?php echo ($cfg['disabledashboard']) ? 'style="display:none;"' : ''; ?>>
+					<label><input class="checkbox" value="1" type="checkbox" <?php checked($wpsecfg['disabledashboard'],true); ?> name="disabledashboard" id="disabledashboard" /> <?php _e('Disable <b><i>Dashboard Widget</i></b>', self :: TEXTDOMAIN ); ?></label><br />
+					<div id="roles" <?php echo ($wpsecfg['disabledashboard']) ? 'style="display:none;"' : ''; ?>>
 						<label id="roleslabel"><?php _e('User roles that can see dashboard widget:', self :: TEXTDOMAIN ); ?></label>
 					<?php 
 						global $wp_roles;
-						if(!isset($cfg['roles_widget'])) $cfg['roles_widget'] = array( "administrator" => "administrator" );
+						if(!isset($wpsecfg['roles_widget'])) $wpsecfg['roles_widget'] = array( "administrator" => "administrator" );
 						$role_select = '<input type="hidden" name="role_name[]" value="administrator" />';
 						foreach( $wp_roles->role_names as $role => $name ) {			
 							$name = _x($name, self :: TEXTDOMAIN );
 							if ( $role != 'administrator' ) {
-								if ( array_search($role, $cfg['roles_widget']) ) {
+								if ( array_search($role, $wpsecfg['roles_widget']) ) {
 									$checked = 'checked="checked"';
 								}else{
 									$checked = '';

@@ -38,10 +38,10 @@ class sellerevents_clientsedit {
 	}
 	
 	public static function create_meta_boxes() {
-		global $post,$client_data, $cfg;
+		global $post,$client_data, $wpsecfg;
 		$client_data = sellerevents_clients :: get_client_data($post->ID);
-		$cfg = get_option(WPSellerEvents :: OPTION_KEY);
-		$cfg = apply_filters('wpse_check_options', $cfg);
+		$wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
+		$wpsecfg = apply_filters('wpse_check_options', $wpsecfg);
 		
 		// Remove Custom Fields Metabox
 		//remove_meta_box( 'postcustom','wpse_client','normal' ); 
@@ -54,7 +54,7 @@ class sellerevents_clientsedit {
 	}
 	
 	public static function seller_box( $post ) {  
-		global $post, $client_data, $cfg, $current_user;
+		global $post, $client_data, $wpsecfg, $current_user;
 		$user_aseller = $client_data['user_aseller'];
 		?>
 		<table class="form-table">
@@ -89,7 +89,7 @@ class sellerevents_clientsedit {
 
 		
 	public static function data_box( $post ) {  
-		global $post, $client_data, $cfg;		
+		global $post, $client_data, $wpsecfg;		
 		?>
 		<table class="form-table">
 		<tbody><tr class="user-email-wrap">
@@ -122,7 +122,7 @@ class sellerevents_clientsedit {
 	
 	
 	public static function options_box( $post ) {  
-		global $post, $client_data, $cfg;
+		global $post, $client_data, $wpsecfg;
 		wp_nonce_field( 'edit-client', 'wpse_client_nonce' ); 
 		$user_contacts = $client_data['user_contacts'];
 
@@ -223,12 +223,12 @@ class sellerevents_clientsedit {
 	}
 	
 	public static function clients_admin_head_scripts() {
-		global $post, $cfg, $wp_locale, $locale;
+		global $post, $wpsecfg, $wp_locale, $locale;
 		if($post->post_type != 'wpse_client') return $post->ID;
 		$post->post_password = '';
 		$visibility = 'public';
 		$visibility_trans = __('Public');
-		//$cfg = get_option(WPSellerEvents :: OPTION_KEY);
+		//$wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
 		
 		?>
 		<script type="text/javascript" language="javascript">

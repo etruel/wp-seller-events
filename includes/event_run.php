@@ -9,7 +9,7 @@ if ( !defined('ABSPATH') )  {
 if ( class_exists( 'wpsellerevents_event_run' ) ) return;
 
 class wpsellerevents_event_run {
-	public $cfg			   = array();
+	public $wpsecfg			   = array();
 	public $event_id	   = 0;  // $post_id of event
 	public $event	   = array();
 
@@ -24,7 +24,7 @@ class wpsellerevents_event_run {
 
 		$this->event_id	= $event_id;		//set event id
 		$this->event		= WPSellerEvents :: get_event($this->event_id);
-		$this->cfg = get_option(WPSellerEvents :: OPTION_KEY);
+		$this->wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
 
 		//set function for PHP user defined error handling
 		if (defined(WP_DEBUG) and WP_DEBUG)
@@ -72,26 +72,26 @@ class wpsellerevents_event_run {
 		$phpmailer->isSMTP();
 
 		// The hostname of the mail server
-		$phpmailer->Host = $this->cfg['mailhost'];
+		$phpmailer->Host = $this->wpsecfg['mailhost'];
 
 		// Use SMTP authentication (true|false)
 		// Force it to use Username and Password to authenticate
 		$phpmailer->SMTPAuth = true;
 
 		// SMTP port number - likely to be 25, 465 or 587
-		$phpmailer->Port = $this->cfg['mailport'];
+		$phpmailer->Port = $this->wpsecfg['mailport'];
 
 		// Username to use for SMTP authentication
-		$phpmailer->Username = $this->cfg['mailuser'];
+		$phpmailer->Username = $this->wpsecfg['mailuser'];
 
 		// Password to use for SMTP authentication
-		$phpmailer->Password = base64_decode($this->cfg['mailpass']);
+		$phpmailer->Password = base64_decode($this->wpsecfg['mailpass']);
 
 		// Encryption system to use - ssl or tls
-		$phpmailer->SMTPSecure = $this->cfg['mailsecure'];
+		$phpmailer->SMTPSecure = $this->wpsecfg['mailsecure'];
 
-		$phpmailer->From = $this->cfg['mailsndemail'];
-		$phpmailer->FromName = $this->cfg['mailsndname'];
+		$phpmailer->From = $this->wpsecfg['mailsndemail'];
+		$phpmailer->FromName = $this->wpsecfg['mailsndname'];
 	}
 
 	/**
@@ -110,12 +110,12 @@ class wpsellerevents_event_run {
 			$sendmail=true;
 
 		if ($sendmail) {	
-			switch($this->cfg['mailmethod']) {
+			switch($this->wpsecfg['mailmethod']) {
 			case 'SMTP':
 				add_action( 'phpmailer_init', array(__CLASS__,'prepare_email' ) );
 				break;
 			default:
-				$headers[] = 'From: '.$this->cfg['mailsndname'].' <'.$this->cfg['mailsndemail'].'>';
+				$headers[] = 'From: '.$this->wpsecfg['mailsndname'].' <'.$this->wpsecfg['mailsndemail'].'>';
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 				//$headers[] = 'Cc: iluvwp@wordpress.org'; // note you can just use a simple email address
 				break;

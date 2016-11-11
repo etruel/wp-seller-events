@@ -5,7 +5,7 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
 }
-$cfg = $this->check_options($this->options);  
+$wpsecfg = $this->check_options($this->options);  
 
 $helptip = array(
  'dateformat' 	=> __('The format that dates must be entered in the date fields. All strings will be displayed following the date format on Wordpress Settings.', self :: TEXTDOMAIN ),
@@ -34,14 +34,14 @@ foreach($helptip as $key => $value){
 				<div class="inside">
 					<strong><?php _e('Limit days to consider report', self :: TEXTDOMAIN); ?></strong>
 					<br>
-					<input value="<?php print($cfg['consideration_days']); ?>" type="number" name="consideration_days">
+					<input value="<?php print($wpsecfg['consideration_days']); ?>" type="number" name="consideration_days">
 				</div>
 				<div class="inside">
 					<strong>Editor Type:</strong>
 					<br>
-					<input type="radio" <?php if($cfg['editor_type']=='Basic') print("checked"); ?>  name="editor_type" value="Basic">Basic
+					<input type="radio" <?php if($wpsecfg['editor_type']=='Basic') print("checked"); ?>  name="editor_type" value="Basic">Basic
 					<br>
-					<input <?php if($cfg['editor_type']=='Advanced') print("checked"); ?> type="radio" name="editor_type" value="Advanced">Advanced
+					<input <?php if($wpsecfg['editor_type']=='Advanced') print("checked"); ?> type="radio" name="editor_type" value="Advanced">Advanced
 				</div>
 			</div>
 
@@ -49,8 +49,8 @@ foreach($helptip as $key => $value){
 				<h3 class="hndle"><span><?php _e('Global Settings', self :: TEXTDOMAIN ); ?></span></h3>
 				<div class="inside"> 
 					<p><b><?php _e('Time format:', self :: TEXTDOMAIN ); ?></b> <span class="mya4_sprite infoIco help_tip" title="<?php echo $helptip['dateformat']; ?>"></span><br />
-					<label><input class="checkbox" value="d/m/Y" type="radio" <?php checked($cfg['dateformat'],"d/m/Y"); ?> name="dateformat" id="dateformat1" />dd/mm/YYYY </label><br />
-					<label><input class="checkbox" value="m/d/Y" type="radio" <?php checked($cfg['dateformat'],"m/d/Y"); ?> name="dateformat" id="dateformat1" />mm/dd/YYYY </label>
+					<label><input class="checkbox" value="d/m/Y" type="radio" <?php checked($wpsecfg['dateformat'],"d/m/Y"); ?> name="dateformat" id="dateformat1" />dd/mm/YYYY </label><br />
+					<label><input class="checkbox" value="m/d/Y" type="radio" <?php checked($wpsecfg['dateformat'],"m/d/Y"); ?> name="dateformat" id="dateformat1" />mm/dd/YYYY </label>
 					</p>
 					<p></p>
 				</div>
@@ -60,7 +60,7 @@ foreach($helptip as $key => $value){
 			<div id="disablewpcron" class="postbox">
 				<h3 class="hndle"><span><?php _e('Disable WP-Cron', self :: TEXTDOMAIN ); ?></span></h3>
 				<div class="inside">
-					<input class="checkbox" id="disablewpcron" type="checkbox"<?php checked($cfg['disablewpcron'],true);?> name="disablewpcron" value="1"/> <?php _e('Use Cron job of Hoster and disable WP_Cron', self :: TEXTDOMAIN ); ?><br />
+					<input class="checkbox" id="disablewpcron" type="checkbox"<?php checked($wpsecfg['disablewpcron'],true);?> name="disablewpcron" value="1"/> <?php _e('Use Cron job of Hoster and disable WP_Cron', self :: TEXTDOMAIN ); ?><br />
 					<div id="hlpcron" style="padding-left:20px;">
 					<strong><?php _e('NOTE:', self :: TEXTDOMAIN ); ?></strong> <?php _e('Checking this, deactivate all Wordpress cron schedules.', self :: TEXTDOMAIN ); ?><br /><br />
 					<?php _e('You must set up a cron job that calls:', self :: TEXTDOMAIN ); ?><br />

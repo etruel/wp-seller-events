@@ -565,11 +565,11 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 				check_admin_referer('wpsellerevents-settings');
 				$errlev = error_reporting();
 				error_reporting(E_ALL & ~E_NOTICE);  // desactivo los notice que aparecen con los _POST
-				$cfg = $this->options;
+				$wpsecfg = $this->options;
 				if($pagenow=='edit.php' && $_GET['post_type']=='wpsellerevents' && $_GET['page']=='wpse_settings' ){
 					switch ( $currenttab ){
 					case 'homepage' :
-						$cfg = apply_filters('wpse_check_options',$_POST);
+						$wpsecfg = apply_filters('wpse_check_options',$_POST);
 						break;
 					case 'extensions' :
 						break;
@@ -582,11 +582,11 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 				foreach ( $_POST['role_name'] as $role_id => $role_val ) {
 					$role_conf["$role_val"]= $role_val;
 				}
-				$cfg['roles_widget'] = $role_conf; 
+				$wpsecfg['roles_widget'] = $role_conf; 
 				
 				error_reporting($errlev);
 				
-				$this->options = $cfg;
+				$this->options = $wpsecfg;
 				# saving
 				if ( $this->update_options() ) {
 					?><div class="updated"><p> <?php _e( 'Settings saved.', self :: TEXTDOMAIN );?></p></div><?php
@@ -611,33 +611,33 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 		 * @return void
 		 */
 		public function load_options() {
-			$cfg= get_option( self :: OPTION_KEY );
-			if ( !$cfg ) {
+			$wpsecfg= get_option( self :: OPTION_KEY );
+			if ( !$wpsecfg ) {
 				$this->options = $this->check_options( array() );
 				add_option( self :: OPTION_KEY, $this->options , '', 'yes' );
 			}else {
-				$this->options = $this->check_options( $cfg );
-//              $this->options = apply_filters('wpse_check_options',$cfg );
+				$this->options = $this->check_options( $wpsecfg );
+//              $this->options = apply_filters('wpse_check_options',$wpsecfg );
 			}
 		}
 
 		public static function check_options($options) {
-			$cfg['mailmethod']	= (!isset($options['mailmethod'])) ?'mail':$options['mailmethod'];
-			$cfg['mailsndemail']	= (!isset($options['mailsndemail'])) ? '':sanitize_email($options['mailsndemail']);
-			$cfg['mailsndname']	= (!isset($options['mailsndname'])) ? '':$options['mailsndname'];
-			$cfg['mailsendmail']	= (!isset($options['mailsendmail'])) ? '': untrailingslashit(str_replace('//','/',str_replace('\\','/',stripslashes($options['mailsendmail']))));
-			$cfg['mailsecure']	= (!isset($options['mailsecure'])) ? '': $options['mailsecure'];
-			$cfg['mailhost']	= (!isset($options['mailhost'])) ? '': $options['mailhost'];
-			$cfg['mailport']	= (!isset($options['mailport'])) ? '': $options['mailport'];
-			$cfg['mailuser']	= (!isset($options['mailuser'])) ? '': $options['mailuser'];
-			$cfg['mailpass']	= (!isset($options['mailpass'])) ? '': base64_encode($options['mailpass']);
-			$cfg['disabledashboard']= (!isset($options['disabledashboard']) || empty($options['disabledashboard'])) ? false : ($options['disabledashboard']==1) ? true : false;
-			$cfg['roles_widget']	= (!isset($options['roles_widget']) || !is_array($options['roles_widget'])) ? array( "administrator" => "administrator", "wpse_manager" => "wpse_manager" ): $options['roles_widget'];
-			$cfg['disablewpcron']	= (!isset($options['disablewpcron']) || empty($options['disablewpcron'])) ? false: ($options['disablewpcron']==1) ? true : false;
-			$cfg['dateformat']	= (!isset($options['dateformat'])) ? 'm/d/Y': $options['dateformat'];
-			$cfg['consideration_days'] = (!isset($options['consideration_days'])) ? '': $options['consideration_days'];
-			$cfg['editor_type'] =  (!isset($options['editor_type'])) ? '': $options['editor_type'];
-			return $cfg;
+			$wpsecfg['mailmethod']	= (!isset($options['mailmethod'])) ?'mail':$options['mailmethod'];
+			$wpsecfg['mailsndemail']	= (!isset($options['mailsndemail'])) ? '':sanitize_email($options['mailsndemail']);
+			$wpsecfg['mailsndname']	= (!isset($options['mailsndname'])) ? '':$options['mailsndname'];
+			$wpsecfg['mailsendmail']	= (!isset($options['mailsendmail'])) ? '': untrailingslashit(str_replace('//','/',str_replace('\\','/',stripslashes($options['mailsendmail']))));
+			$wpsecfg['mailsecure']	= (!isset($options['mailsecure'])) ? '': $options['mailsecure'];
+			$wpsecfg['mailhost']	= (!isset($options['mailhost'])) ? '': $options['mailhost'];
+			$wpsecfg['mailport']	= (!isset($options['mailport'])) ? '': $options['mailport'];
+			$wpsecfg['mailuser']	= (!isset($options['mailuser'])) ? '': $options['mailuser'];
+			$wpsecfg['mailpass']	= (!isset($options['mailpass'])) ? '': base64_encode($options['mailpass']);
+			$wpsecfg['disabledashboard']= (!isset($options['disabledashboard']) || empty($options['disabledashboard'])) ? false : ($options['disabledashboard']==1) ? true : false;
+			$wpsecfg['roles_widget']	= (!isset($options['roles_widget']) || !is_array($options['roles_widget'])) ? array( "administrator" => "administrator", "wpse_manager" => "wpse_manager" ): $options['roles_widget'];
+			$wpsecfg['disablewpcron']	= (!isset($options['disablewpcron']) || empty($options['disablewpcron'])) ? false: ($options['disablewpcron']==1) ? true : false;
+			$wpsecfg['dateformat']	= (!isset($options['dateformat'])) ? 'm/d/Y': $options['dateformat'];
+			$wpsecfg['consideration_days'] = (!isset($options['consideration_days'])) ? '': $options['consideration_days'];
+			$wpsecfg['editor_type'] =  (!isset($options['editor_type'])) ? '': $options['editor_type'];
+			return $wpsecfg;
 		}
 		
 		/**
