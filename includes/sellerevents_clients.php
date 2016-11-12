@@ -251,7 +251,7 @@ class sellerevents_clients {
 	}
 	
 	public static function save_client_data( $post_id ) {
-		global $post, $cfg;
+		global $post, $wpsecfg;
 		if((defined('DOING_AJAX') && DOING_AJAX) || isset($_REQUEST['bulk_edit'])) {
 			//WPSellerEvents ::save_quick_edit_post($post_id);
 			return $post_id;

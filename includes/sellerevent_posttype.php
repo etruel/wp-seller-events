@@ -187,14 +187,14 @@ class sellerevent_posttype {
 		} 
 		
 	public static function custom_wpsellerevents_column( $column, $post_id ) {
-		$cfg = get_option( WPSellerEvents :: OPTION_KEY);
+		$wpsecfg = get_option( WPSellerEvents :: OPTION_KEY);
 		$event_data = WPSellerEvents :: get_event ( $post_id );
 		switch ( $column ) {
 		  case 'status':
 			echo $event_data['event_posttype']; 
 			break;
 		  case 'start':
-			echo date_i18n(  $cfg['dateformat'] .' '.get_option( 'time_format' ), $event_data['fromdate'] ); 
+			echo date_i18n(  $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $event_data['fromdate'] ); 
 			if(current_user_can('administrator')) {
 				echo '<br>'.$event_data['fromdate'] ; 
 			}
@@ -213,7 +213,7 @@ class sellerevent_posttype {
 						$status = __('Missed', WPSellerEvents :: TEXTDOMAIN );
 					}				
 				}else{
-					$status = __('Alert on', WPSellerEvents :: TEXTDOMAIN ) .' '. date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun);
+					$status = __('Alert on', WPSellerEvents :: TEXTDOMAIN ) .' '. date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $cronnextrun);
 				}
 
 			} else {
@@ -250,8 +250,8 @@ class sellerevent_posttype {
 	}
 	
 	public static function custom_filters($options) {
-		global $typenow, $wp_query, $current_user, $pagenow, $cfg;
-		if(is_null($cfg)) $cfg = get_option( WPSellerEvents :: OPTION_KEY);
+		global $typenow, $wp_query, $current_user, $pagenow, $wpsecfg;
+		if(is_null($wpsecfg)) $wpsecfg = get_option( WPSellerEvents :: OPTION_KEY);
 		if($pagenow=='edit.php' && is_admin() && current_user_can('edit_sellerevents') && $typenow=='wpsellerevents') {
 			if(!current_user_can('wpse_seller')) : ?>
 				<?php
@@ -323,16 +323,16 @@ class sellerevent_posttype {
 		<?php
 		$byrange = (isset($_GET['byrange']) && !empty($_GET['byrange']) ) ? $_GET['byrange'] : 'no';
 		$datestart	= (!isset($_GET['datestart']) ) ? current_time('timestamp')  : $_GET['datestart'];
-		$datestart	= (is_int( $datestart) ) ? $datestart : WPSellerEvents::date2time($datestart, $cfg['dateformat'].' '.get_option('time_format') );
+		$datestart	= (is_int( $datestart) ) ? $datestart : WPSellerEvents::date2time($datestart, $wpsecfg['dateformat'].' '.get_option('time_format') );
 		$dateend	= (!isset($_GET['dateend']) ) ? current_time('timestamp')  : $_GET['dateend'];
-		$dateend	= (is_int( $dateend) ) ? $dateend : WPSellerEvents::date2time($dateend, $cfg['dateformat'].' '.get_option('time_format') );
+		$dateend	= (is_int( $dateend) ) ? $dateend : WPSellerEvents::date2time($dateend, $wpsecfg['dateformat'].' '.get_option('time_format') );
 
 		?><div style="display: inline-block;vertical-align: top;margin: 1px 8px 0px 0px;">
 			<input name="range_action" id="queryrange" class="button" value="<?php _e('Date Range', WPSellerEvents :: TEXTDOMAIN ); ?>" type="button"><br/>
 			<input name="byrange" id="byrange" value="<?php echo $byrange; ?>" type="hidden">
 			<span style="position: absolute; background: #5D9F81; padding: 3px; width: 152px;" class="<?php echo ($byrange=='yes') ? '' : 'hidden'; ?> daterange">
-			<input style="width: 100%;" name="datestart" id="datestart" class="fieldate" value="<?php echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $datestart ); 	?>" type="text"><br/>
-			<input style="width: 100%;" name="dateend" id="dateend" class="fieldate" value="<?php echo date_i18n( $cfg['dateformat'] .' '.get_option( 'time_format' ), $dateend ); 	?>" type="text">
+			<input style="width: 100%;" name="datestart" id="datestart" class="fieldate" value="<?php echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $datestart ); 	?>" type="text"><br/>
+			<input style="width: 100%;" name="dateend" id="dateend" class="fieldate" value="<?php echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $dateend ); 	?>" type="text">
 			</span>
 
 		</div>	
@@ -348,8 +348,8 @@ class sellerevent_posttype {
 
 	// Show only posts and media related to logged in author
 	public static function query_set_custom_filters( $wp_query ) {
-		global $current_user, $pagenow, $typenow, $cfg;
-		if(is_null($cfg)) $cfg = get_option( WPSellerEvents :: OPTION_KEY);
+		global $current_user, $pagenow, $typenow, $wpsecfg;
+		if(is_null($wpsecfg)) $wpsecfg = get_option( WPSellerEvents :: OPTION_KEY);
 		if($pagenow=='edit.php' && is_admin() && $typenow=='wpsellerevents') {
 			$seller_id = (isset($_GET['seller']) && !empty($_GET['seller']) ) ? $_GET['seller'] : '';
 			$filtering = false;
@@ -387,8 +387,8 @@ class sellerevent_posttype {
 
 			$byrange = (isset($_GET['byrange']) && !empty($_GET['byrange']) ) ? $_GET['byrange'] : 'no';
 			if($byrange == 'yes'){
-				$datestart = (isset($_GET['datestart']) && !empty($_GET['datestart']) ) ? WPSellerEvents::date2time($_GET['datestart'], $cfg['dateformat'].' '.get_option('time_format') ) : 0;
-				$dateend = (isset($_GET['dateend']) && !empty($_GET['dateend']) ) ? WPSellerEvents::date2time($_GET['dateend'], $cfg['dateformat'].' '.get_option('time_format') ) : current_time('timestamp');
+				$datestart = (isset($_GET['datestart']) && !empty($_GET['datestart']) ) ? WPSellerEvents::date2time($_GET['datestart'], $wpsecfg['dateformat'].' '.get_option('time_format') ) : 0;
+				$dateend = (isset($_GET['dateend']) && !empty($_GET['dateend']) ) ? WPSellerEvents::date2time($_GET['dateend'], $wpsecfg['dateformat'].' '.get_option('time_format') ) : current_time('timestamp');
 				if(!empty($datestart)) {
 					$filtering = true;				
 					$datestart = sanitize_text_field($datestart);
@@ -538,9 +538,9 @@ class sellerevent_posttype {
     }
     
 	public static function events_list_admin_head() {
-		global $post, $post_type, $cfg, $locale;
+		global $post, $post_type, $wpsecfg, $locale;
 		if($post_type != 'wpsellerevents') return $post->ID;
-		if(is_null($cfg)) $cfg = get_option( WPSellerEvents :: OPTION_KEY);
+		if(is_null($wpsecfg)) $wpsecfg = get_option( WPSellerEvents :: OPTION_KEY);
 		?><style type="text/css">br {display: inherit !important;}</style>
 		<script type="text/javascript" language="javascript">
 			jQuery(document).ready(function($){
@@ -579,8 +579,8 @@ class sellerevent_posttype {
 				'lang'			=> substr($locale, 0, 2),
 				'UTC'			=> get_option( 'gmt_offset' ),
 				'timeFormat'    => get_option( 'time_format' ),
-				'dateFormat'    => sellerevents_eventedit :: date_format_php_to_js( $cfg['dateformat'] ),
-				'printFormat'   => sellerevents_eventedit :: date_format_php_to_js( $cfg['dateformat'] ).' '.get_option( 'time_format' ),
+				'dateFormat'    => sellerevents_eventedit :: date_format_php_to_js( $wpsecfg['dateformat'] ),
+				'printFormat'   => sellerevents_eventedit :: date_format_php_to_js( $wpsecfg['dateformat'] ).' '.get_option( 'time_format' ),
 				'firstDay'      => get_option( 'start_of_week' ),
 			);
 			echo "$('#datestart').datetimepicker({
@@ -707,8 +707,8 @@ class sellerevent_posttype {
 	//change actions from custom post type list
 	public static function wpsellerevents_quick_actions( $actions ) {
 		global $post;
-		$cfg = get_option(WPSellerEvents :: OPTION_KEY);
-		$cfg = apply_filters('wpse_check_options', $cfg);
+		$wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
+		$wpsecfg = apply_filters('wpse_check_options', $wpsecfg);
 		if( $post->post_type == 'wpsellerevents' ) {
 			$post_type_object = get_post_type_object( $post->post_type );
 			$can_edit_post = current_user_can( 'edit_post', $post->ID );
