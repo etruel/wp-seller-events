@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Seller Events 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-30 15:06-0300\n"
-"PO-Revision-Date: 2016-09-30 15:08-0300\n"
+"POT-Creation-Date: 2016-11-11 20:39-0400\n"
+"PO-Revision-Date: 2016-11-11 20:39-0400\n"
 "Last-Translator: Esteban <esteban@netmdp.com>\n"
 "Language-Team: NetMdP <esteban@netmdp.com>\n"
 "Language: es\n"
@@ -11,56 +11,49 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e;_x\n"
-"X-Poedit-Basepath: ../\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: includes/Plugin_Updater.php:177
+#: includes/Plugin_Updater.php:196
 #, php-format
 msgid ""
-"There is a new version of %1$s available. <a target=\"_blank\" class="
-"\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s."
 msgstr ""
-"Hay una nueva versión de %1$s disponible. <a target=\"_blank\" class="
-"\"thickbox\" href=\"%2$s\">Ver los detalles de la versión %3$s</a>."
 
-#: includes/Plugin_Updater.php:184
+#: includes/Plugin_Updater.php:204
 #, php-format
 msgid ""
-"There is a new version of %1$s available. <a target=\"_blank\" class="
-"\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
-"\">update now</a>."
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
+"or %5$supdate now%6$s."
 msgstr ""
-"Hay una nueva versión de %1$s disponible. <a target=\"_blank\" class="
-"\"thickbox\" href=\"%2$s\">Ver los detalles de la versión %3$s</a> or <a "
-"href=\"%4$s\">actualiza ahora</a>."
 
-#: includes/Plugin_Updater.php:324
+#: includes/Plugin_Updater.php:358
 msgid "You do not have permission to install plugin updates"
 msgstr "No tiene permisos para instalar actualizaciones de plugins"
 
-#: includes/Plugin_Updater.php:324
+#: includes/Plugin_Updater.php:358
 msgid "Error"
 msgstr "Error "
 
 #: includes/WPeUsuarios.php:229 includes/sellerevents_clientsedit.php:100
-#: includes/sellerevents_clientsedit.php:140
-#: includes/sellerevents_eventedit.php:277
+#: includes/sellerevents_clientsedit.php:144
+#: includes/sellerevents_eventedit.php:283
 msgid "Address"
 msgstr "Dirección"
 
 #: includes/WPeUsuarios.php:230 includes/sellerevents_clientsedit.php:104
-#: includes/sellerevents_eventedit.php:281
+#: includes/sellerevents_eventedit.php:287
 msgid "Telephone"
 msgstr "Teléfono"
 
 #: includes/WPeUsuarios.php:231 includes/sellerevents_clientsedit.php:108
-#: includes/sellerevents_eventedit.php:285
+#: includes/sellerevents_eventedit.php:291
 msgid "Cellular"
 msgstr "Celular"
 
 #: includes/WPeUsuarios.php:232 includes/sellerevents_clientsedit.php:112
-#: includes/sellerevents_eventedit.php:289
+#: includes/sellerevents_eventedit.php:295
 msgid "Facebook URL"
 msgstr "URL perfil de Facebook"
 
@@ -125,21 +118,53 @@ msgstr "[STRICT NOTICE]"
 msgid "[RECOVERABLE ERROR]"
 msgstr "[RECOVERABLE ERROR]"
 
-#: includes/sellerevent_posttype.php:56
-#: includes/sellerevents_eventypes.php:109
-msgid "Events"
-msgstr "Eventos"
+#: includes/report_interests_page.php:36 sellerevents.php:482
+#: sellerevents.php:483
+msgid "Report Interests"
+msgstr ""
 
+#: includes/report_interests_page.php:40 includes/report_interests_page.php:100
 #: includes/sellerevent_posttype.php:57
 msgid "Event"
 msgstr "Evento"
+
+#: includes/report_interests_page.php:41 includes/report_interests_page.php:101
+#: includes/sellerevent_posttype.php:121
+msgid "Status"
+msgstr "Estado"
+
+#: includes/report_interests_page.php:42 includes/report_interests_page.php:102
+#: includes/sellerevents_eventedit.php:195
+#: includes/sellerevents_eventedit.php:427
+msgid "Date"
+msgstr "Fecha"
+
+#: includes/report_interests_page.php:43 includes/report_interests_page.php:103
+msgid "Seller"
+msgstr ""
+
+#: includes/report_interests_page.php:44 includes/report_interests_page.php:104
+#: includes/sellerevent_posttype.php:123 includes/sellerevents_clients.php:48
+#: includes/sellerevents_eventedit.php:335
+msgid "Client"
+msgstr "Cliente"
+
+#: includes/report_interests_page.php:45 includes/report_interests_page.php:105
+#: includes/sellerevents_interests.php:35
+#: includes/sellerevents_interests.php:37 sellerevents.php:453
+msgid "Interests"
+msgstr "Intereses"
+
+#: includes/sellerevent_posttype.php:56 includes/sellerevents_eventypes.php:109
+msgid "Events"
+msgstr "Eventos"
 
 #: includes/sellerevent_posttype.php:58 includes/sellerevent_posttype.php:59
 msgid "Add New Event"
 msgstr "Añadir nuevo Evento"
 
-#: includes/sellerevent_posttype.php:60 sellerevents.php:316
-#: sellerevents.php:339
+#: includes/sellerevent_posttype.php:60 sellerevents.php:318
+#: sellerevents.php:341
 msgid "Edit Event"
 msgstr "Editar Evento"
 
@@ -183,20 +208,10 @@ msgstr "Fecha de Inicio"
 msgid "Scheduled"
 msgstr "Programado"
 
-#: includes/sellerevent_posttype.php:121
-msgid "Status"
-msgstr "Estado"
-
-#: includes/sellerevent_posttype.php:122
-#: includes/sellerevents_eventedit.php:96
-#: includes/sellerevents_eventedit.php:293 sellerevents.php:639
+#: includes/sellerevent_posttype.php:122 includes/sellerevents_eventedit.php:96
+#: includes/sellerevents_eventedit.php:299 sellerevents.php:664
 msgid "Salesman"
 msgstr "Vendedor"
-
-#: includes/sellerevent_posttype.php:123 includes/sellerevents_clients.php:48
-#: includes/sellerevents_eventedit.php:329
-msgid "Client"
-msgstr "Cliente"
 
 #: includes/sellerevent_posttype.php:124
 msgid "Event Type"
@@ -222,106 +237,110 @@ msgstr "Alerta"
 msgid "Inactive"
 msgstr "Inactivo"
 
-#: includes/sellerevent_posttype.php:270
+#: includes/sellerevent_posttype.php:276
 msgid "All Sellers"
 msgstr "Todos los Vendedores"
 
-#: includes/sellerevent_posttype.php:295
+#: includes/sellerevent_posttype.php:301
 msgid "All Clients"
 msgstr "Todos los Clientes"
 
-#: includes/sellerevent_posttype.php:309
+#: includes/sellerevent_posttype.php:315
 msgid "All Statuses"
 msgstr "Todos los Estados"
 
-#: includes/sellerevent_posttype.php:325
+#: includes/sellerevent_posttype.php:331
 msgid "Date Range"
 msgstr "Rango de Fechas"
 
-#: includes/sellerevent_posttype.php:438 includes/sellerevent_posttype.php:443
-#: includes/sellerevent_posttype.php:448 includes/sellerevent_posttype.php:453
-#: includes/sellerevent_posttype.php:458 includes/sellerevents_clients.php:354
-#: includes/sellerevents_clients.php:359 includes/sellerevents_clients.php:364
-#: includes/sellerevents_clients.php:369 includes/sellerevents_clients.php:374
+#: includes/sellerevent_posttype.php:343
+msgid "Print PDF"
+msgstr ""
+
+#: includes/sellerevent_posttype.php:449 includes/sellerevent_posttype.php:454
+#: includes/sellerevent_posttype.php:459 includes/sellerevent_posttype.php:464
+#: includes/sellerevent_posttype.php:469 includes/sellerevents_clients.php:356
+#: includes/sellerevents_clients.php:361 includes/sellerevents_clients.php:366
+#: includes/sellerevents_clients.php:371 includes/sellerevents_clients.php:376
 #, php-format
 msgid "<a href=\"%s\""
 msgstr "<a href=\"%s\""
 
-#: includes/sellerevent_posttype.php:486
+#: includes/sellerevent_posttype.php:510
 msgid "The action must exist."
 msgstr "La acción debe existir."
 
-#: includes/sellerevent_posttype.php:491
+#: includes/sellerevent_posttype.php:515
 msgid "Event ID must exist."
 msgstr "El ID del Evento debe existir."
 
-#: includes/sellerevent_posttype.php:501
+#: includes/sellerevent_posttype.php:525
 msgid "Event activated"
 msgstr "Evento Activado"
 
-#: includes/sellerevent_posttype.php:501
+#: includes/sellerevent_posttype.php:525
 msgid "Event Deactivated"
 msgstr "Evento Desactivado"
 
-#: includes/sellerevent_posttype.php:526
+#: includes/sellerevent_posttype.php:550
 msgid "Wait Please..."
 msgstr "Un momento..."
 
-#: includes/sellerevent_posttype.php:586
+#: includes/sellerevent_posttype.php:610
 msgid "(Child)"
 msgstr "(Hijo)"
 
-#: includes/sellerevent_posttype.php:638 includes/sellerevent_posttype.php:666
+#: includes/sellerevent_posttype.php:662 includes/sellerevent_posttype.php:690
 msgid "No event ID has been supplied!"
 msgstr "Ningún ID de evento ha sido provisto!"
 
-#: includes/sellerevent_posttype.php:660
+#: includes/sellerevent_posttype.php:684
 msgid "Copy event failed, could not find original:"
 msgstr "Fallo la copia del evento, no se encontró el original:"
 
-#: includes/sellerevent_posttype.php:699
+#: includes/sellerevent_posttype.php:723
 msgid "Edit this item"
 msgstr "Editar este ítem"
 
-#: includes/sellerevent_posttype.php:699
+#: includes/sellerevent_posttype.php:723
 msgid "Edit"
 msgstr "Editar"
 
-#: includes/sellerevent_posttype.php:704
+#: includes/sellerevent_posttype.php:728
 msgid "Restore this item from the Trash"
 msgstr "Restaurar este ítem desde la Papelera"
 
-#: includes/sellerevent_posttype.php:704
+#: includes/sellerevent_posttype.php:728
 msgid "Restore"
 msgstr "Restaurar"
 
-#: includes/sellerevent_posttype.php:706
+#: includes/sellerevent_posttype.php:730
 msgid "Move this item to the Trash"
 msgstr "Mover este ítem a la Papelera"
 
-#: includes/sellerevent_posttype.php:706
+#: includes/sellerevent_posttype.php:730
 msgid "Trash"
 msgstr "Papelera"
 
-#: includes/sellerevent_posttype.php:708
+#: includes/sellerevent_posttype.php:732
 msgid "Delete this item permanently"
 msgstr "Borrar este ítem permanentemente"
 
-#: includes/sellerevent_posttype.php:708
+#: includes/sellerevent_posttype.php:732
 msgid "Delete Permanently"
 msgstr "Borrar Permanentemente"
 
-#: includes/sellerevent_posttype.php:721
-#: includes/sellerevents_eventedit.php:667
+#: includes/sellerevent_posttype.php:745
+#: includes/sellerevents_eventedit.php:673
 msgid "Create Child Event"
 msgstr "Crear Evento Vinculado"
 
 #: includes/sellerevents_channels.php:34 includes/sellerevents_channels.php:36
-#: sellerevents.php:460
+#: sellerevents.php:463
 msgid "Channels"
 msgstr "Canales"
 
-#: includes/sellerevents_channels.php:35 includes/sellerevents_clients.php:295
+#: includes/sellerevents_channels.php:35 includes/sellerevents_clients.php:297
 msgid "Channel"
 msgstr "Canal"
 
@@ -366,14 +385,12 @@ msgid "Choose from the most popular channels"
 msgstr "Elige entre los canales más populares"
 
 #: includes/sellerevents_channels.php:102 includes/sellerevents_clients.php:47
-#: includes/sellerevents_clients.php:58
-#: includes/sellerevents_interests.php:101
-#: includes/sellerevents_segments.php:101 sellerevents.php:410
+#: includes/sellerevents_clients.php:58 includes/sellerevents_interests.php:101
+#: includes/sellerevents_segments.php:101 sellerevents.php:412
 msgid "Clients"
 msgstr "Clientes"
 
-#: includes/sellerevents_clients.php:49
-#: includes/sellerevents_eventedit.php:352
+#: includes/sellerevents_clients.php:49 includes/sellerevents_eventedit.php:358
 msgid "Add New"
 msgstr "Añadir"
 
@@ -421,21 +438,20 @@ msgstr "Mostrar todos los Intereses"
 msgid "Show All Channels"
 msgstr "Mostrar todos los Canales"
 
-#: includes/sellerevents_clients.php:291
-#: includes/sellerevents_eventedit.php:269
+#: includes/sellerevents_clients.php:293
+#: includes/sellerevents_eventedit.php:275
 msgid "Client Name"
 msgstr "Nombre del Cliente"
 
-#: includes/sellerevents_clients.php:292
+#: includes/sellerevents_clients.php:294
 msgid "Added"
 msgstr "Agregar"
 
-#: includes/sellerevents_clients.php:293 includes/sellerevents_segments.php:36
+#: includes/sellerevents_clients.php:295 includes/sellerevents_segments.php:36
 msgid "Segment"
 msgstr "Segmento"
 
-#: includes/sellerevents_clients.php:294
-#: includes/sellerevents_interests.php:36
+#: includes/sellerevents_clients.php:296 includes/sellerevents_interests.php:36
 msgid "Interest"
 msgstr "Interés"
 
@@ -460,59 +476,63 @@ msgid "Client Contacts"
 msgstr "Contactos del Cliente"
 
 #: includes/sellerevents_clientsedit.php:70
-#: includes/sellerevents_eventedit.php:302
+#: includes/sellerevents_eventedit.php:308
 msgid "Choose a Salesman"
 msgstr "Selecciona un Vendedor"
 
 #: includes/sellerevents_clientsedit.php:96
-#: includes/sellerevents_eventedit.php:273
+#: includes/sellerevents_eventedit.php:279
 msgid "E-mail"
 msgstr "E-mail"
 
-#: includes/sellerevents_clientsedit.php:136
+#: includes/sellerevents_clientsedit.php:116
+msgid "Null client for the Report of Interests"
+msgstr ""
+
+#: includes/sellerevents_clientsedit.php:140
 #: includes/sellerevents_eventypes.php:105
 msgid "Description"
 msgstr "Descripción"
 
-#: includes/sellerevents_clientsedit.php:137
+#: includes/sellerevents_clientsedit.php:141
 msgid "Phone"
 msgstr "Particular"
 
-#: includes/sellerevents_clientsedit.php:138
+#: includes/sellerevents_clientsedit.php:142
 msgid "Email"
 msgstr "Email"
 
-#: includes/sellerevents_clientsedit.php:139
+#: includes/sellerevents_clientsedit.php:143
 msgid "Position"
 msgstr "Posición"
 
-#: includes/sellerevents_clientsedit.php:143
+#: includes/sellerevents_clientsedit.php:147
 msgid "Update Client to save Contacts order"
 msgstr "Actualizar Cliente para salvar el orden de los Contactos"
 
-#: includes/sellerevents_clientsedit.php:164
-#: includes/sellerevents_eventedit.php:442
+#: includes/sellerevents_clientsedit.php:168
+#: includes/sellerevents_eventedit.php:448
 msgid "Delete this item"
 msgstr "Borrar este ítem"
 
-#: includes/sellerevents_clientsedit.php:171
+#: includes/sellerevents_clientsedit.php:175
 msgid "Add User Contact"
 msgstr "Añadir Nuevo Contacto"
 
-#: includes/sellerevents_clientsedit.php:226
-#: includes/sellerevents_eventedit.php:664
+#: includes/sellerevents_clientsedit.php:230
+#: includes/sellerevents_eventedit.php:670
 msgid "Public"
 msgstr "Público"
 
-#: includes/sellerevents_clientsedit.php:232
+#: includes/sellerevents_clientsedit.php:236
 msgid "Save Client"
 msgstr "Guardar Cliente"
 
-#: includes/sellerevents_clientsedit.php:233
+#: includes/sellerevents_clientsedit.php:237
 msgid "Update"
 msgstr "Actualizar"
 
-#: includes/sellerevents_clientsedit.php:295
+#: includes/sellerevents_clientsedit.php:299
 msgid "Update Client to save changes."
 msgstr "Actualizar Cliente para salvar los cambios."
 
@@ -536,36 +556,43 @@ msgstr "El cliente ya existe."
 msgid "Client added."
 msgstr "Cliente Agregado"
 
-#: includes/sellerevents_eventedit.php:100
+#: includes/sellerevents_eventedit.php:103
 msgid "Event Status"
 msgstr "Estado del Evento"
 
-#: includes/sellerevents_eventedit.php:101
+#: includes/sellerevents_eventedit.php:104
 msgid "Observations"
 msgstr "Observaciones"
 
-#: includes/sellerevents_eventedit.php:129
+#: includes/sellerevents_eventedit.php:107
+msgid "Options for this event"
+msgstr "Opciones para este evento"
+
+#: includes/sellerevents_eventedit.php:135
 msgid "Select the seller from the list."
 msgstr "Seleccione el vendedor de la lista."
 
-#: includes/sellerevents_eventedit.php:150
+#: includes/sellerevents_eventedit.php:156
 msgid "Search Salesman"
 msgstr "Buscar Vendedor"
 
-#: includes/sellerevents_eventedit.php:189
-#: includes/sellerevents_eventedit.php:421
-msgid "Date"
-msgstr "Fecha"
+#: includes/sellerevents_eventedit.php:200
+msgid "To Date"
+msgstr "Hasta Fecha"
 
-#: includes/sellerevents_eventedit.php:202
+#: includes/sellerevents_eventedit.php:205
+msgid "Insert the start and end dates from this event."
+msgstr ""
+
+#: includes/sellerevents_eventedit.php:208
 msgid "Insert the date for this event."
 msgstr "Insertar la fecha de este evento."
 
-#: includes/sellerevents_eventedit.php:205
+#: includes/sellerevents_eventedit.php:211
 msgid "Alarm Type"
 msgstr "Tipo de Alarma"
 
-#: includes/sellerevents_eventedit.php:207
+#: includes/sellerevents_eventedit.php:213
 #: includes/sellerevents_eventypes.php:106
 #: includes/sellerevents_eventypes.php:176
 #: includes/sellerevents_eventypes.php:204
@@ -573,7 +600,7 @@ msgstr "Tipo de Alarma"
 msgid "Quantity"
 msgstr "Cantidad"
 
-#: includes/sellerevents_eventedit.php:209
+#: includes/sellerevents_eventedit.php:215
 #: includes/sellerevents_eventypes.php:107
 #: includes/sellerevents_eventypes.php:181
 #: includes/sellerevents_eventypes.php:213
@@ -581,35 +608,35 @@ msgstr "Cantidad"
 msgid "Period"
 msgstr "Período"
 
-#: includes/sellerevents_eventedit.php:212
+#: includes/sellerevents_eventedit.php:218
 #: includes/sellerevents_eventypes.php:184
 #: includes/sellerevents_eventypes.php:220
 #: includes/sellerevents_eventypes.php:271
 msgid "minutes"
 msgstr "minutos"
 
-#: includes/sellerevents_eventedit.php:213
+#: includes/sellerevents_eventedit.php:219
 #: includes/sellerevents_eventypes.php:185
 #: includes/sellerevents_eventypes.php:221
 #: includes/sellerevents_eventypes.php:272
 msgid "hours"
 msgstr "horas"
 
-#: includes/sellerevents_eventedit.php:214
+#: includes/sellerevents_eventedit.php:220
 #: includes/sellerevents_eventypes.php:186
 #: includes/sellerevents_eventypes.php:222
 #: includes/sellerevents_eventypes.php:273
 msgid "days"
 msgstr "días"
 
-#: includes/sellerevents_eventedit.php:215
+#: includes/sellerevents_eventedit.php:221
 #: includes/sellerevents_eventypes.php:187
 #: includes/sellerevents_eventypes.php:223
 #: includes/sellerevents_eventypes.php:274
 msgid "weeks"
 msgstr "semanas"
 
-#: includes/sellerevents_eventedit.php:221
+#: includes/sellerevents_eventedit.php:227
 #, php-format
 msgid ""
 "Select a period for this event.  An email will be sent to the Seller on "
@@ -620,85 +647,85 @@ msgstr ""
 "<span class=\"b scqty\">%1s</span> <span class=\"b scper\">%2s</span> antes "
 "de <span class=\"b scfrd\">%3s</span>."
 
-#: includes/sellerevents_eventedit.php:231
+#: includes/sellerevents_eventedit.php:237
 msgid "Activate Alarm"
 msgstr "Activar Alarma"
 
-#: includes/sellerevents_eventedit.php:235
+#: includes/sellerevents_eventedit.php:241
 msgid "Save event to refresh."
 msgstr "Graba el evento para actualizar la fecha."
 
-#: includes/sellerevents_eventedit.php:251
+#: includes/sellerevents_eventedit.php:257
 msgid "Select the customer from the list."
 msgstr "Seleccione el cliente de la lista."
 
-#: includes/sellerevents_eventedit.php:255
-#: includes/sellerevents_eventedit.php:732
+#: includes/sellerevents_eventedit.php:261
+#: includes/sellerevents_eventedit.php:738
 msgid "Client contacts not defined."
 msgstr "Contactos del Cliente sin definir."
 
-#: includes/sellerevents_eventedit.php:321
+#: includes/sellerevents_eventedit.php:327
 msgid "Accept"
 msgstr "Aceptar"
 
-#: includes/sellerevents_eventedit.php:322
+#: includes/sellerevents_eventedit.php:328
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: includes/sellerevents_eventedit.php:332
+#: includes/sellerevents_eventedit.php:338
 msgid "Client Contact"
 msgstr "Contacto del Cliente"
 
-#: includes/sellerevents_eventedit.php:349
+#: includes/sellerevents_eventedit.php:355
 msgid "Search Client"
 msgstr "Buscar Cliente"
 
-#: includes/sellerevents_eventedit.php:355
+#: includes/sellerevents_eventedit.php:361
 msgid "Type Client Name Here"
 msgstr "Ingrese el nombre del Cliente"
 
-#: includes/sellerevents_eventedit.php:387
+#: includes/sellerevents_eventedit.php:393
 msgid "Search Contact"
 msgstr "Buscar Contacto"
 
-#: includes/sellerevents_eventedit.php:422
+#: includes/sellerevents_eventedit.php:428
 msgid "Observation"
 msgstr "Observación"
 
-#: includes/sellerevents_eventedit.php:425
+#: includes/sellerevents_eventedit.php:431
 msgid "Update Event to save order"
 msgstr "Actualizar Evento para salvar el orden"
 
-#: includes/sellerevents_eventedit.php:450
+#: includes/sellerevents_eventedit.php:456
 msgid "Add an observation"
 msgstr "Agregar una Observación"
 
-#: includes/sellerevents_eventedit.php:530
+#: includes/sellerevents_eventedit.php:536
 msgid "Error: Field From Date must be filled."
 msgstr "Error: Debe completar el campo Desde Fecha."
 
-#: includes/sellerevents_eventedit.php:538
+#: includes/sellerevents_eventedit.php:544
 msgid "Error: A customer must be selected from list.."
 msgstr "Error: Debe Seleccionar un cliente de la lista."
 
-#: includes/sellerevents_eventedit.php:548
+#: includes/sellerevents_eventedit.php:554
 msgid "Error: A Salesman must be selected from list."
 msgstr "Error: Debe Seleccionar un vendedor de la lista."
 
-#: includes/sellerevents_eventedit.php:707
+#: includes/sellerevents_eventedit.php:713
 msgid "Error searching Event type."
 msgstr "Error buscando Tipo de Evento."
 
-#: includes/sellerevents_eventedit.php:729
+#: includes/sellerevents_eventedit.php:735
 msgid "Error retrieving User Contacts."
 msgstr "Error recuperando Contactos del Usuario."
 
-#: includes/sellerevents_eventedit.php:969
-#: includes/sellerevents_eventedit.php:999
+#: includes/sellerevents_eventedit.php:975
+#: includes/sellerevents_eventedit.php:1005
 msgid "Type the client name in the search field before Add New Client;"
 msgstr "Tipee el nombre del cliente en el campo de busqueda antes de Añadir;"
 
-#: includes/sellerevents_eventedit.php:979
+#: includes/sellerevents_eventedit.php:985
 msgid "Update Event to save changes."
 msgstr "Actualiza el evento para salvar los cambios."
 
@@ -742,8 +769,8 @@ msgstr "Agregar Tipo de Evento"
 msgid "New Event Type Name"
 msgstr "Nombre del Nuevo Tipo de Evento"
 
-#: includes/sellerevents_eventypes.php:43 sellerevents.php:429
-#: sellerevents.php:430
+#: includes/sellerevents_eventypes.php:43 sellerevents.php:431
+#: sellerevents.php:432
 msgid "Event Types"
 msgstr "Tipos de Evento"
 
@@ -784,11 +811,6 @@ msgstr "- PHP 5.3.0 o mayor requerido!"
 #: includes/sellerevents_functions.php:31
 msgid "- WP-Cron don't working please check it!"
 msgstr "- WP-Cron no está funcionando.  Por favor chequee!"
-
-#: includes/sellerevents_interests.php:35
-#: includes/sellerevents_interests.php:37 sellerevents.php:450
-msgid "Interests"
-msgstr "Intereses"
 
 #: includes/sellerevents_interests.php:38
 msgid "Search Interests"
@@ -855,7 +877,7 @@ msgid "Deactivate License"
 msgstr "Desactivar Licencia"
 
 #: includes/sellerevents_segments.php:35 includes/sellerevents_segments.php:37
-#: sellerevents.php:440
+#: sellerevents.php:442
 msgid "Segments"
 msgstr "Segmentos"
 
@@ -919,39 +941,43 @@ msgstr ""
 msgid "Seller Events settings"
 msgstr "Opciones Seller Events"
 
-#: includes/settings_page.php:32
+#: includes/settings_page.php:35
+msgid "Limit days to consider report"
+msgstr ""
+
+#: includes/settings_page.php:49
 msgid "Global Settings"
 msgstr "Opciones Globales"
 
-#: includes/settings_page.php:34
+#: includes/settings_page.php:51
 msgid "Time format:"
 msgstr "Formato de Fecha:"
 
-#: includes/settings_page.php:44
+#: includes/settings_page.php:61
 msgid "Disable WP-Cron"
 msgstr "Deshabilitar WP-Cron"
 
-#: includes/settings_page.php:46
+#: includes/settings_page.php:63
 msgid "Use Cron job of Hoster and disable WP_Cron"
 msgstr "Usar Cron del servidor y desactivar el Cron de Wordpress"
 
-#: includes/settings_page.php:48
+#: includes/settings_page.php:65
 msgid "NOTE:"
 msgstr "NOTA:"
 
-#: includes/settings_page.php:48
+#: includes/settings_page.php:65
 msgid "Checking this, deactivate all Wordpress cron schedules."
 msgstr "Marcando esto, desactiva todos los cronogramas de Wordpress."
 
-#: includes/settings_page.php:49
+#: includes/settings_page.php:66
 msgid "You must set up a cron job that calls:"
 msgstr "Debe configurar un trabajo Cron que llame:"
 
-#: includes/settings_page.php:51 includes/settings_page.php:55
+#: includes/settings_page.php:68 includes/settings_page.php:72
 msgid "or URL:"
 msgstr "o URL:"
 
-#: includes/settings_page.php:53
+#: includes/settings_page.php:70
 msgid ""
 "If also want to run the wordpress cron with external cron you can set up a "
 "cron job that calls:"
@@ -959,7 +985,7 @@ msgstr ""
 "Si también quiere ejecutar los cronogramas de Wordpress desde el cron "
 "externo, debe configurar un trabajo cron que llame:"
 
-#: includes/settings_page.php:62 includes/settings_sidebar.php:78
+#: includes/settings_page.php:81 includes/settings_sidebar.php:78
 msgid "Save settings"
 msgstr "Guardar opciones"
 
@@ -1035,83 +1061,83 @@ msgstr "Roles de usuario que pueden ver el widget de escritorio:"
 msgid "Knows my plugins"
 msgstr "Conoce mis plugins"
 
-#: sellerevents.php:168
+#: sellerevents.php:170
 msgid "Open"
 msgstr "Abierto"
 
-#: sellerevents.php:169
+#: sellerevents.php:171
 msgid "Successfully Operation"
 msgstr "Operación Exitosa"
 
-#: sellerevents.php:170
+#: sellerevents.php:172
 msgid "Closed"
 msgstr "Cerrado"
 
-#: sellerevents.php:259
+#: sellerevents.php:261
 msgid "WPSellerEvents"
 msgstr "WPSellerEvents"
 
-#: sellerevents.php:308
+#: sellerevents.php:310
 msgid "Last Processed Events:"
 msgstr "Últimos Eventos Procesados:"
 
-#: sellerevents.php:334
+#: sellerevents.php:336
 msgid "Next Scheduled Events:"
 msgstr "Próximos Eventos Programados:"
 
-#: sellerevents.php:344
+#: sellerevents.php:346
 msgid "Running since:"
 msgstr "Funcionando desde:"
 
-#: sellerevents.php:344
+#: sellerevents.php:346
 msgid "sec."
 msgstr "segs."
 
-#: sellerevents.php:353
+#: sellerevents.php:355
 msgid "None"
 msgstr "Ninguno"
 
-#: sellerevents.php:371
+#: sellerevents.php:373
 msgid "Load WPSellerEvents Settings Page"
 msgstr "Cargar pagina de configuración de WPSellerEvents"
 
-#: sellerevents.php:371 sellerevents.php:469 sellerevents.php:470
+#: sellerevents.php:373 sellerevents.php:472 sellerevents.php:473
 msgid "Settings"
 msgstr "Opciones"
 
-#: sellerevents.php:392
+#: sellerevents.php:394
 msgid "FAQ"
 msgstr "FAQ"
 
-#: sellerevents.php:393
+#: sellerevents.php:395
 msgid "Support"
 msgstr "Soporte"
 
-#: sellerevents.php:411
+#: sellerevents.php:413
 msgid "Clients List"
 msgstr "Listado de Clientes"
 
-#: sellerevents.php:419 sellerevents.php:420
+#: sellerevents.php:421 sellerevents.php:422
 msgid "Add Client"
 msgstr "Añadir Cliente"
 
-#: sellerevents.php:439
+#: sellerevents.php:441
 msgid "Client Segments"
 msgstr "Segmentos de Cliente"
 
-#: sellerevents.php:449
+#: sellerevents.php:452
 msgid "Client Interests"
 msgstr "Intereses del Cliente"
 
-#: sellerevents.php:459
+#: sellerevents.php:462
 msgid "Client Channels"
 msgstr "Canales de Cliente"
 
-#: sellerevents.php:480 sellerevents.php:481
+#: sellerevents.php:493 sellerevents.php:494
 msgid "License"
 msgstr "Licencia"
 
-#: sellerevents.php:516
+#: sellerevents.php:540
 msgid ""
 "This is where you would enter the license keys for one of our premium "
 "plugins, should you activate one."
@@ -1119,22 +1145,32 @@ msgstr ""
 "Aquí es donde se ingresa la clave de licencia para uno de nuestros plugins "
 "premium, debería activar uno."
 
-#: sellerevents.php:568
+#: sellerevents.php:592
 msgid "Settings saved."
 msgstr "Los cambios han sido guardados."
 
-#: sellerevents.php:638
+#: sellerevents.php:663
 msgid "Manager"
 msgstr "Supervisor"
 
-#~ msgid "Options for this event"
-#~ msgstr "Opciones para este evento"
+#~ msgid ""
+#~ "There is a new version of %1$s available. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+#~ msgstr ""
+#~ "Hay una nueva versión de %1$s disponible. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">Ver los detalles de la versión %3$s</a>."
+
+#~ msgid ""
+#~ "There is a new version of %1$s available. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
+#~ "\">update now</a>."
+#~ msgstr ""
+#~ "Hay una nueva versión de %1$s disponible. <a target=\"_blank\" class="
+#~ "\"thickbox\" href=\"%2$s\">Ver los detalles de la versión %3$s</a> or <a "
+#~ "href=\"%4$s\">actualiza ahora</a>."
 
 #~ msgid "From Date"
 #~ msgstr "Desde Fecha"
-
-#~ msgid "To Date"
-#~ msgstr "Hasta Fecha"
 
 #~ msgid "Runtime:"
 #~ msgstr "Tiempo de ejecución:"

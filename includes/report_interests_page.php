@@ -33,16 +33,16 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 
 <!--VIEW TEMPLATE-->
 <div class="wrap">
-<h1>Report Interests</h1>
+<h1><?php _e('Report Interests', self :: TEXTDOMAIN); ?></h1>
 <table class="wp-list-table widefat fixed striped pages table-report-interest">
 <thead>
 	<tr>
-		<th>Event</th>
-		<th>Status</th>
-		<th>Date</th>
-		<th>Seller</th>
-		<th>Client  == ></th>
-		<th>Interests</th>
+		<th><?php _e('Event', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Status', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Date', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Seller', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Client', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Interests', self :: TEXTDOMAIN); ?></th>
 	</tr>
 </thead>
 <tbody>
@@ -97,12 +97,12 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 </tbody>
 <tfoot>
 	<tr>
-		<th>Event</th>
-		<th>Status</th>
-		<th>Date</th>
-		<th>Seller</th>
-		<th>Client  == ></th>
-		<th>Interests</th>
+		<th><?php _e('Event', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Status', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Date', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Seller', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Client', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Interests', self :: TEXTDOMAIN); ?></th>
 	</tr>
 </tfoot>
 </table>
