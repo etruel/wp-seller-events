@@ -481,7 +481,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 				'edit.php?post_type=wpsellerevents',
 				__( 'Report Interests', self :: TEXTDOMAIN ),
 				__( 'Report Interests', self :: TEXTDOMAIN ),
-				'edit_wpse_settings',
+				'edit_wpse_client',
 				'wpse_report_interests',
 				array( &$this, 'add_report_interest_page' )
 			);

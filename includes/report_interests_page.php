@@ -8,11 +8,31 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 
 //functions 
 //formulated  days passed
-	function days_passed($date_1,$date_2) {
-		$days	= (strtotime($date_1)-strtotime($date_2))/86400;
-		$days 	= abs($days); $days = floor($days);		
-		return $days;
-	}
+function days_passed($date_1,$date_2) {
+	$days	= (strtotime($date_1)-strtotime($date_2))/86400;
+	$days 	= abs($days); $days = floor($days);		
+	return $days;
+}
+//rol user 
+function get_user_data(){
+	$current_user = wp_get_current_user();
+	/*echo 'Username: ' . $current_user->user_login . '<br />';
+	echo 'User email: ' . $current_user->user_email . '<br />';
+	echo 'User first name: ' . $current_user->user_firstname . '<br />';
+	echo 'User last name: ' . $current_user->user_lastname . '<br />';
+	echo 'User display name: ' . $current_user->display_name . '<br />';
+	echo 'User ID: ' . $current_user->ID . '<br />';
+	$user_info = get_userdata($current_user->ID);
+	echo 'User roles: ' . implode(', ', $user_info->roles) . "\n";*/
+	return $current_user;
+}
+function get_user_role($current_user){
+	$user_info = get_userdata($current_user->ID);
+	$user_role = implode(', ',$user_info->roles);
+	return $user_role;
+}
+
+
 ?><?php 	
 	//formulated for events triggered by days to consider 
 	$wpsecfg = $this->check_options($this->options);
@@ -47,16 +67,21 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 </thead>
 <tbody>
 <?php 
+	//info user
+	$myuser = get_user_data();
+	//role user
+	$my_role = get_user_role($myuser);
+
 	if( $my_query->have_posts() ) {
 		while ($my_query->have_posts()) : $my_query->the_post(); 
 			//get info events
 			$event_data = WPSellerEvents :: get_event (get_the_id()); 
 			//date event
 			$fromdate = date_i18n($wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $event_data['fromdate']);
-
 			//get info clients
 			$client_data = sellerevents_clients :: get_client_data($event_data['customer_id']);	
 			
+
 			//get how many days have passed since the firing of the alarm until the current date
 			$event_show_days = days_passed($fromdate,$date_now);
 
@@ -66,27 +91,30 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 				if($event_data['event_status']!="success"){
 					//display the list of events that the stipulated days have elapsed after activating the alarm
 					if($event_show_days>=$consideration_days){
+						if(($my_role == 'wpse_seller' && $myuser->ID == $event_data['seller_id']) || $my_role == 'administrator'){
+
 ?>
-						<tr>
-							<td><?php the_title(); ?></td>
-							<td><?php print($event_data['event_status']); ?></td>
-							<td><?php the_time('Y/m/d'); ?></td>
-							<td><?php print(get_post_meta(get_the_id(), 'seller',TRUE)); ?></td>
-							<td><?php print(get_post_meta(get_the_id(), 'client',TRUE)); ?></td>
-							<td class="td_interest">
-								<ol class="resp-interests-user">
-									<?php 
-										//interest Taxonomy
-										$term_list = wp_get_post_terms($event_data['customer_id'], 'interest', array("fields" => "all"));
-									 	foreach($term_list as $term_single) {
-									 ?>	
-									 			<li><?php echo $term_single->slug; ?></li>	
-									 <?php } ?>
-									
-								</ol>
-							</td>
-						</tr>
+								<tr>
+									<td><?php the_title(); ?></td>
+									<td><?php print($event_data['event_status']); ?></td>
+									<td><?php the_time('Y/m/d'); ?></td>
+									<td><?php print(get_post_meta(get_the_id(), 'seller',TRUE)); ?></td>
+									<td><?php print(get_post_meta(get_the_id(), 'client',TRUE)); ?></td>
+									<td class="td_interest">
+										<ol class="resp-interests-user">
+											<?php 
+												//interest Taxonomy
+												$term_list = wp_get_post_terms($event_data['customer_id'], 'interest', array("fields" => "all"));
+											 	foreach($term_list as $term_single) {
+											 ?>	
+											 			<li><?php echo $term_single->slug; ?></li>	
+											 <?php } ?>
+											
+										</ol>
+									</td>
+								</tr>
 <?php  
+						}
 					}//if closing events as the days of consideration
 				}//closed if event estatus
 			}//closed if user-null-interest
