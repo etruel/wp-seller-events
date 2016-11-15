@@ -92,9 +92,11 @@ class sellerevents_eventedit {
 		//remove_meta_box( 'postcustom','wpsellerevents','normal' ); 
 	//	add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args );
 		
-		if(!current_user_can('wpse_seller')){
-			add_meta_box( 'seller-box', __('Salesman', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__  ,'seller_box' ),'wpsellerevents','side', 'default' );
-		}
+		//if(current_user_can('wpse_seller')){
+		add_meta_box( 'seller-box', __('Salesman', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__  ,'seller_box' ),'wpsellerevents','side', 'default' );
+		//}
+
+
 		
 		if($wpsecfg['editor_type']=="Basic"){
 			add_action('post_submitbox_minor_actions', array( __CLASS__ ,'options_box'));
@@ -125,12 +127,13 @@ class sellerevents_eventedit {
 		
 		
 			//*************************************************************************************
-	public static function seller_box( $post ) {  
+	public static function seller_box( $post ) { 
 		global $post, $event_data, $wpsecfg, $current_user;
 		$seller_id = $event_data['seller_id'];
 		if(isset($seller_id) && ($seller_id>0) ) { // if already set takes the value 
 			$seller = get_userdata( $seller_id );
 		}else {
+
 			if(!current_user_can('wpse_seller'))	 { // if current user is not a seller shows the list to choice, else shows current user
 				$seller = (object)array('display_name'=> __('Select the seller from the list.', WPSellerEvents :: TEXTDOMAIN ) );
 			}else{
@@ -141,7 +144,10 @@ class sellerevents_eventedit {
 			}
 		}
 		?>
+
+
 		<div class="event-seller">
+
 			<div id="seller_ico" class="mya4_sprite <?php echo (isset($seller_id) && ($seller_id>0)) ?'tab_inactive_accSummary' : 'tab_active_accSummary' ?>" style="float: left;margin-right: 8px;"></div>
 			<input type="hidden" name="seller_id" id="seller_id" value="<?php echo $seller_id; ?>">
 			<div id="seller_name">
@@ -876,7 +882,7 @@ class sellerevents_eventedit {
 				$('#wpcontent .ajax-loading').attr('style',' visibility: visible;');
 				$.ajaxSetup({async:false});
 				error=false;
-				
+
 				var data = {
 					fromdate: $("input[name='fromdate']").val(),
 					todate	: $("input[name='todate']").val(),

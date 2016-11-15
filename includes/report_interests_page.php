@@ -16,14 +16,6 @@ function days_passed($date_1,$date_2) {
 //rol user 
 function get_user_data(){
 	$current_user = wp_get_current_user();
-	/*echo 'Username: ' . $current_user->user_login . '<br />';
-	echo 'User email: ' . $current_user->user_email . '<br />';
-	echo 'User first name: ' . $current_user->user_firstname . '<br />';
-	echo 'User last name: ' . $current_user->user_lastname . '<br />';
-	echo 'User display name: ' . $current_user->display_name . '<br />';
-	echo 'User ID: ' . $current_user->ID . '<br />';
-	$user_info = get_userdata($current_user->ID);
-	echo 'User roles: ' . implode(', ', $user_info->roles) . "\n";*/
 	return $current_user;
 }
 function get_user_role($current_user){
@@ -37,7 +29,7 @@ function get_user_role($current_user){
 	//formulated for events triggered by days to consider 
 	$wpsecfg = $this->check_options($this->options);
 	$consideration_days = $wpsecfg['consideration_days'];
-	$date_now = date('d/m/Y h:i A');
+	$date_now = date('m/d/Y h:i A');
 
 	//Query Arguments	
 	$args=array(
@@ -59,7 +51,8 @@ function get_user_role($current_user){
 	<tr>
 		<th><?php _e('Event', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Status', self :: TEXTDOMAIN); ?></th>
-		<th><?php _e('Date', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Date of the event', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Days gone by from the wind',self :: TEXTDOMAIN) ?></th>
 		<th><?php _e('Seller', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Client', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Interests', self :: TEXTDOMAIN); ?></th>
@@ -80,8 +73,7 @@ function get_user_role($current_user){
 			$fromdate = date_i18n($wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $event_data['fromdate']);
 			//get info clients
 			$client_data = sellerevents_clients :: get_client_data($event_data['customer_id']);	
-			
-
+		
 			//get how many days have passed since the firing of the alarm until the current date
 			$event_show_days = days_passed($fromdate,$date_now);
 
@@ -91,13 +83,14 @@ function get_user_role($current_user){
 				if($event_data['event_status']!="success"){
 					//display the list of events that the stipulated days have elapsed after activating the alarm
 					if($event_show_days>=$consideration_days){
-						if(($my_role == 'wpse_seller' && $myuser->ID == $event_data['seller_id']) || $my_role == 'administrator'){
+						if(($my_role == 'wpse_seller' && $myuser->ID == $event_data['seller_id']) || $my_role == 'administrator' || $my_role=='wpse_manager'){
 
 ?>
 								<tr>
 									<td><?php the_title(); ?></td>
 									<td><?php print($event_data['event_status']); ?></td>
-									<td><?php the_time('Y/m/d'); ?></td>
+									<td><?php print($fromdate);  ?></td>
+									<td><?php print($event_show_days); ?></td>
 									<td><?php print(get_post_meta(get_the_id(), 'seller',TRUE)); ?></td>
 									<td><?php print(get_post_meta(get_the_id(), 'client',TRUE)); ?></td>
 									<td class="td_interest">
@@ -127,7 +120,8 @@ function get_user_role($current_user){
 	<tr>
 		<th><?php _e('Event', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Status', self :: TEXTDOMAIN); ?></th>
-		<th><?php _e('Date', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Date of the event', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Days gone by from the wind',self :: TEXTDOMAIN) ?></th>
 		<th><?php _e('Seller', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Client', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Interests', self :: TEXTDOMAIN); ?></th>
