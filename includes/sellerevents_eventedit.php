@@ -88,15 +88,13 @@ class sellerevents_eventedit {
 		$wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
 		$wpsecfg = apply_filters('wpse_check_options', $wpsecfg);
 		
-		// Remove Custom Fields Metabox
+		//Remove Custom Fields Metabox
 		//remove_meta_box( 'postcustom','wpsellerevents','normal' ); 
-	//	add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args );
+		//add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args );
 		
 		//if(current_user_can('wpse_seller')){
 		add_meta_box( 'seller-box', __('Salesman', WPSellerEvents :: TEXTDOMAIN ), array(  __CLASS__  ,'seller_box' ),'wpsellerevents','side', 'default' );
 		//}
-
-
 		
 		if($wpsecfg['editor_type']=="Basic"){
 			add_action('post_submitbox_minor_actions', array( __CLASS__ ,'options_box'));
@@ -202,18 +200,19 @@ class sellerevents_eventedit {
 			<input class="fieldate" type="text" name="fromdate" value="<?php 
 				echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate ); 				
 				?>" id="fromdate"/>&nbsp; &nbsp; 
-		
+		<?php if($wpsecfg['editor_type']!="Basic") : ?>
 			<b><?php echo '<label for="todate">' . __('To Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
 			<input class="fieldate" type="text" name="todate" value="<?php 
 				echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $todate );
 				?>" id="todate"/>
 			 <br />		 
 			<span class="description"><?php _e('Insert the start and end dates from this event.', WPSellerEvents :: TEXTDOMAIN ); ?></span>
-		
+		 <?php else: ?>
 			<br />		 
 			<span class="description"><?php _e('Insert the date for this event.', WPSellerEvents :: TEXTDOMAIN ); ?></span>
+		 <?php endif; ?>
 		</p>
-<div>
+<div <?php echo ($wpsecfg['editor_type']=="Basic") ? 'style="display:none;"' : ''; ?>>
 		<b><?php echo __('Alarm Type', WPSellerEvents :: TEXTDOMAIN ); ?>: </b><br/>
 		
 		<b><label for="quantity"><?php _e( 'Quantity', WPSellerEvents :: TEXTDOMAIN ); ?></label>: </b>

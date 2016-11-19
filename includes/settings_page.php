@@ -27,32 +27,24 @@ foreach($helptip as $key => $value){
 		<div id="post-body">
 			<div id="post-body-content">
 				<div id="normal-sortables" class="meta-box-sortables ui-sortable">
-		
-
-				<div id="dias_considerar" class="postbox">
-				<h3 class="hndle">Event Settings</h3>
-				<div class="inside">
-					<strong><?php _e('Limit days to consider report', self :: TEXTDOMAIN); ?></strong>
-					<br>
-					<input value="<?php print($wpsecfg['consideration_days']); ?>" type="number" name="consideration_days">
-				</div>
-				<div class="inside">
-					<strong>Editor Type:</strong>
-					<br>
-					<input type="radio" <?php if($wpsecfg['editor_type']=='Basic') print("checked"); ?>  name="editor_type" value="Basic">Basic
-					<br>
-					<input <?php if($wpsecfg['editor_type']=='Advanced') print("checked"); ?> type="radio" name="editor_type" value="Advanced">Advanced
-				</div>
-			</div>
 
 			<div id="enablefeatures" class="postbox">
 				<h3 class="hndle"><span><?php _e('Global Settings', self :: TEXTDOMAIN ); ?></span></h3>
 				<div class="inside"> 
-					<p><b><?php _e('Time format:', self :: TEXTDOMAIN ); ?></b> <span class="mya4_sprite infoIco help_tip" title="<?php echo $helptip['dateformat']; ?>"></span><br />
-					<label><input class="checkbox" value="d/m/Y" type="radio" <?php checked($wpsecfg['dateformat'],"d/m/Y"); ?> name="dateformat" id="dateformat1" />dd/mm/YYYY </label><br />
-					<label><input class="checkbox" value="m/d/Y" type="radio" <?php checked($wpsecfg['dateformat'],"m/d/Y"); ?> name="dateformat" id="dateformat1" />mm/dd/YYYY </label>
+					<p class="radioptions">
+						<strong><?php _e('Editor Type', self :: TEXTDOMAIN ); ?>:</strong><br>
+						<label><input type="radio" <?php if($wpsecfg['editor_type']=='Basic') print("checked"); ?>  name="editor_type" value="Basic"><?php _e('Basic', self :: TEXTDOMAIN ); ?></label><br>
+						<label><input <?php if($wpsecfg['editor_type']=='Advanced') print("checked"); ?> type="radio" name="editor_type" value="Advanced"><?php _e('Advanced', self :: TEXTDOMAIN ); ?></label>
+					</p>
+					<p class="radioptions"><b><?php _e('Time format:', self :: TEXTDOMAIN ); ?></b> <span class="mya4_sprite infoIco help_tip" title="<?php echo $helptip['dateformat']; ?>"></span><br />
+						<label><input class="checkbox" value="d/m/Y" type="radio" <?php checked($wpsecfg['dateformat'],"d/m/Y"); ?> name="dateformat" id="dateformat1" />dd/mm/YYYY </label><br />
+						<label><input class="checkbox" value="m/d/Y" type="radio" <?php checked($wpsecfg['dateformat'],"m/d/Y"); ?> name="dateformat" id="dateformat1" />mm/dd/YYYY </label>
 					</p>
 					<p></p>
+					<p><strong><?php _e('Limit days to consider report', self :: TEXTDOMAIN); ?></strong>
+						<br>
+						<input value="<?php print($wpsecfg['consideration_days']); ?>" type="number" name="consideration_days">
+					</p>
 				</div>
 			</div>
 		

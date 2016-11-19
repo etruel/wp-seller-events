@@ -29,8 +29,7 @@ function get_user_role($current_user){
 	//formulated for events triggered by days to consider 
 	$wpsecfg = $this->check_options($this->options);
 	$consideration_days = $wpsecfg['consideration_days'];
-	$date_now = date('m/d/Y h:i A');
-
+	$date_now = date_i18n($wpc_temp['dateformat'] .' '.get_option( 'time_format' ));
 	//Query Arguments	
 	$args=array(
 		'order' => 'ASC', 
@@ -51,8 +50,8 @@ function get_user_role($current_user){
 	<tr>
 		<th><?php _e('Event', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Status', self :: TEXTDOMAIN); ?></th>
-		<th><?php _e('Date of the event', self :: TEXTDOMAIN); ?></th>
-		<th><?php _e('Days gone by from the wind',self :: TEXTDOMAIN) ?></th>
+		<th><?php _e('Date', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Days gone by from the event',self :: TEXTDOMAIN) ?></th>
 		<th><?php _e('Seller', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Client', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Interests', self :: TEXTDOMAIN); ?></th>
@@ -88,20 +87,28 @@ function get_user_role($current_user){
 
 ?>
 								<tr>
-									<td><?php the_title(); ?></td>
+									<td><?php 
+										$link = admin_url( add_query_arg( array( 'action' => 'edit', 'post' => get_the_ID() ), 'post.php' ) ); 
+										echo "<a class='linkclient' href='$link'>".get_the_title(get_the_ID())."</a>";
+										?>
+									</td>
 									<td><?php print($event_data['event_status']); ?></td>
 									<td><?php print($fromdate);  ?></td>
 									<td><?php print($event_show_days); ?></td>
-									<td><?php print(get_post_meta(get_the_id(), 'seller',TRUE)); ?></td>
-									<td><?php print(get_post_meta(get_the_id(), 'client',TRUE)); ?></td>
+									<td><?php print(get_post_meta(get_the_ID(), 'seller',TRUE)); ?></td>
+									<td>
+										<?php $link = admin_url( add_query_arg( array( 'action' => 'edit', 'post' => $event_data['customer_id'] ), 'post.php' ) ); 
+										echo "<a class='linkclient' href='$link'>".get_the_title($event_data['customer_id'])."</a>";
+										//print(get_post_meta(get_the_id(), 'client',TRUE)); 
+										?>
+									</td>
 									<td class="td_interest">
 										<ol class="resp-interests-user">
 											<?php 
 												//interest Taxonomy
 												$term_list = wp_get_post_terms($event_data['customer_id'], 'interest', array("fields" => "all"));
-											 	foreach($term_list as $term_single) {
-											 ?>	
-											 			<li><?php echo $term_single->slug; ?></li>	
+											 	foreach($term_list as $term_single) { 	 ?>	
+											 		<li><?php echo $term_single->slug; ?></li>	
 											 <?php } ?>
 											
 										</ol>
@@ -121,8 +128,8 @@ function get_user_role($current_user){
 	<tr>
 		<th><?php _e('Event', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Status', self :: TEXTDOMAIN); ?></th>
-		<th><?php _e('Date of the event', self :: TEXTDOMAIN); ?></th>
-		<th><?php _e('Days gone by from the wind',self :: TEXTDOMAIN) ?></th>
+		<th><?php _e('Date', self :: TEXTDOMAIN); ?></th>
+		<th><?php _e('Days gone by from the event',self :: TEXTDOMAIN) ?></th>
 		<th><?php _e('Seller', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Client', self :: TEXTDOMAIN); ?></th>
 		<th><?php _e('Interests', self :: TEXTDOMAIN); ?></th>

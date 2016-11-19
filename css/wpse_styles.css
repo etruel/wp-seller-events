@@ -289,7 +289,15 @@ width: 200px;
 max-height: 150px;
 overflow-y: auto;
 }
-#roles label{
-margin: 5px;
-display: table;
+
+#roles label {
+	margin: 5px;
+    display: inherit;
+}
+
+.radioptions{
+	border: 1px solid #cccccc;
+	padding: 5px;
+	display: inline-block;
+	border-radius: 4px;
 }

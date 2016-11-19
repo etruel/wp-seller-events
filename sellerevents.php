@@ -475,7 +475,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 				'wpse_settings',
 				array( &$this, 'add_admin_submenu_page' )
 			);
-
+			add_action( 'admin_print_styles-' . $page, array(&$this, 'wpse_admin_styles') );
 
 			$page = add_submenu_page(
 				'edit.php?post_type=wpsellerevents',
@@ -502,9 +502,9 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 
 		function wpse_admin_styles() {
 			wp_enqueue_style( 'wpseStylesheet' );
-			wp_enqueue_style( 'oplugincss' );			
-			wp_enqueue_script( 'jquerytiptip' );
-			wp_enqueue_script( 'opluginjs' );
+			//wp_enqueue_style( 'oplugincss' );			
+			//wp_enqueue_script( 'jquerytiptip' );
+			//wp_enqueue_script( 'opluginjs' );
 		}
 
 		

@@ -11,7 +11,10 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN')) {
 				<div class="postbox inside">
 					<h3 class="handle"><?php _e( 'About', self :: TEXTDOMAIN );?></h3>
 					<div class="inside">
-						<p><strong><?php echo '► '.  self::$name. ' '. self::$version. ' ◄' ; ?></strong></p>
+						<p style="text-align: center;"><img src="<?php echo WPSellerEvents :: $uri; ?>images/logo.jpg" alt="" width="100%" style="float: none;clear: both;">
+							<strong><?php echo '► '.  self::$name. ' '. self::$version. ' ◄' ; ?></strong>
+						</p>
+						
 <?php /*						<p><?php _e( 'Thanks for test, use and enjoy this plugin.', self :: TEXTDOMAIN );?></p>
 						<p><?php _e( 'If you like it, I really appreciate a donation.', self :: TEXTDOMAIN );?></p>
 						<p>

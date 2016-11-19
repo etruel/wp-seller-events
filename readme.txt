@@ -49,6 +49,7 @@ You can either install it automatically from the WordPress admin, or do it manua
 == Changelog ==
 
 = 1.4 =
+* Added "the Red Button" on events list to filter the events for today.
 * Added two modes, Basic, and Advanced for the events load to allow the missed fields in 1.3 version.
 * Add a button to print to PDF the pages of the events list.
 * Added a Report of Interests to see the abandoned clients that have a past event.
