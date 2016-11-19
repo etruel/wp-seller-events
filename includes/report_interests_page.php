@@ -67,6 +67,7 @@ function get_user_role($current_user){
 
 	if( $my_query->have_posts() ) {
 		while ($my_query->have_posts()) : $my_query->the_post(); 
+		
 			//get info events
 			$event_data = WPSellerEvents :: get_event (get_the_id()); 
 			//date event

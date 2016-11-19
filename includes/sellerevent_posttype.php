@@ -249,7 +249,45 @@ class sellerevent_posttype {
 		return true;
 	}
 	
+
+
 	public static function custom_filters($options) {
+	
+			function wpse_num_row($wpc_temp)
+			{	
+				//count events today
+				$current_user = wp_get_current_user();
+				$user_info = get_userdata($current_user->ID);
+				$my_role = implode(', ',$user_info->roles);
+
+				$date_now = date('m/d/Y h:i A');
+				$date_temp = 0;
+				$total_events_today = 0;
+				$args=array(
+					'order' => 'ASC', 
+					'orderby' => 'title', 
+					'post_type' => 'wpsellerevents',
+					'post_status' => 'publish'
+				);
+				$my_query = null;
+				$my_query = new WP_Query($args);
+				if( $my_query->have_posts() ) {
+					while ($my_query->have_posts()) : $my_query->the_post(); 
+							$event_data = WPSellerEvents :: get_event (get_the_id()); 
+							$date_temp = date_i18n($wpc_temp['dateformat'] .' '.get_option( 'time_format' ), $event_data['fromdate']);
+							if(($my_role == 'wpse_seller' && $current_user->ID == $event_data['seller_id']) || $my_role == 'administrator' || $my_role=='wpse_manager'){
+								if(substr($date_temp,0,10) == substr($date_now,0,10)){
+										$total_events_today+=1;
+
+								}								
+							}
+					endwhile;
+				}
+				return $total_events_today;
+			}
+
+
+
 		global $typenow, $wp_query, $current_user, $pagenow, $wpsecfg;
 		if(is_null($wpsecfg)) $wpsecfg = get_option( WPSellerEvents :: OPTION_KEY);
 		if($pagenow=='edit.php' && is_admin() && current_user_can('edit_sellerevents') && $typenow=='wpsellerevents') {
@@ -330,7 +368,7 @@ class sellerevent_posttype {
 		?><div style="display: inline-block;vertical-align: top;margin: 1px 8px 0px 0px;">
 			<input name="range_action" id="queryrange" class="button" value="<?php _e('Date Range', WPSellerEvents :: TEXTDOMAIN ); ?>" type="button"><br/>
 			<input name="byrange" id="byrange" value="<?php echo $byrange; ?>" type="hidden">
-			<span style="position: absolute; background: #5D9F81; padding: 3px; width: 152px;" class="<?php echo ($byrange=='yes') ? '' : 'hidden'; ?> daterange">
+			<span style="position: absolute; background: #5D9F81; padding: 3px; width: 152px;" class="<?php echo ($byrange=='yes' && $_GET['filter_action_todaydate']!="yes") ? '' : 'hidden'; ?> daterange">
 			<input style="width: 100%;" name="datestart" id="datestart" class="fieldate" value="<?php echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $datestart ); 	?>" type="text"><br/>
 			<input style="width: 100%;" name="dateend" id="dateend" class="fieldate" value="<?php echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $dateend ); 	?>" type="text">
 			</span>
@@ -338,9 +376,15 @@ class sellerevent_posttype {
 		</div>	
 
 		<!--pdf jspdf-->
+		<input type="button" id="printButtonPDF" class="button right" value="<?php _e('Print PDF',WPSellerEvents :: TEXTDOMAIN); ?>">
+			
+
+		<?php $wpse_total_today = wpse_num_row($wpsecfg);   ?>
+		<!--FILFER EVENTS TODAY-->
+		<input type="submit" name="filter_action"  todaydate="<?php echo date('m/d/Y'); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="<?php _e('It has '.$wpse_total_today.' events for today',WPSellerEvents :: TEXTDOMAIN); ?>">
+		<input type="hidden" name="filter_action_todaydate" value="no" id="filter_action_todaydate">
 		
 
-		<input type="button" id="printButtonPDF" class="button right" value="<?php _e('Print PDF',WPSellerEvents :: TEXTDOMAIN); ?>">
 		<?php
 
 	}
@@ -572,6 +616,15 @@ class sellerevent_posttype {
 					$('#byrange').val('no');
 					$('.daterange').fadeOut();
 				}
+			});
+
+			//click event filter_today_event
+			$(document).on('click','#filter_today_event',function(event){
+				mydate = $(this).attr('todaydate');
+				$("#datestart").val(mydate+" 1:00 am");
+				$("#dateend").val(mydate+" 11:59 pm");
+				$('#byrange').val('yes');
+				$("#filter_action_todaydate").val("yes");
 			});
 			
 			<?php
