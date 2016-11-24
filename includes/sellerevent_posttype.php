@@ -400,8 +400,7 @@ class sellerevent_posttype {
 		$datestart	= (is_int( $datestart) ) ? $datestart : WPSellerEvents::date2time($datestart, $wpsecfg['dateformat'].' '.get_option('time_format') );
 		$dateend	= (!isset($_GET['dateend']) ) ? current_time('timestamp')  : $_GET['dateend'];
 		$dateend	= (is_int( $dateend) ) ? $dateend : WPSellerEvents::date2time($dateend, $wpsecfg['dateformat'].' '.get_option('time_format') );
-		error_log($dateend);
-		error_log($datestart);
+
 		?>
 		<!--pdf jspdf-->
 		<input type="button" id="printButtonPDF" class="button right" value="<?php _e('Print PDF',WPSellerEvents :: TEXTDOMAIN); ?>">
