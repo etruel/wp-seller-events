@@ -159,6 +159,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 
 		
 		public static function init() {
+			global $wp;
 			if(is_admin()) $plugin_data = get_plugin_data( __FILE__ );
 			@self :: $name = $plugin_data['Name'];
 			@self :: $version = $plugin_data['Version'];
@@ -173,6 +174,17 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 			);
 			
 			new self( TRUE );
+
+
+			$current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			if (admin_url('edit.php?post_type=wpsellerevents') == $current_url) {
+				$wpsecfg = get_option( WPSellerEvents :: OPTION_KEY);
+				$startt = date($wpsecfg['dateformat']);
+				$endt = date($wpsecfg['dateformat'], strtotime($startt . "+1 days"));
+				wp_redirect(admin_url('edit.php?post_type=wpsellerevents&datestart='.$startt.'&dateend='.$endt.'&byrange=yes'));
+				exit;
+			}
+
 		}
 		
 		/**

@@ -290,11 +290,33 @@ class sellerevent_posttype {
 		?>
 		<!--FILFER EVENTS TODAY-->
 		<div class="alignleft actions">
+		 <?php
+		 	$startt = date($wpsecfg['dateformat']);
+			$endt = date($wpsecfg['dateformat'], strtotime($startt . "+1 days")); 
+		 	$current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+			if (admin_url('edit.php?post_type=wpsellerevents&datestart='.$startt.'&dateend='.$endt.'&byrange=yes') == urldecode($current_url)) { ?>
+
 <?php 	if( current_user_can('administrator') ) : ?>
-			<input type="submit" name="filter_action"  todaydate="<?php echo date_i18n($wpsecfg['dateformat']); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="<?php echo __('There are', WPSellerEvents :: TEXTDOMAIN). ' ' . $total_events_today.' '. __('events for today', WPSellerEvents :: TEXTDOMAIN); ?>">
+			<input type="submit" name="filter_action"  todaydate="<?php echo date_i18n($wpsecfg['dateformat']); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="Mostrar todos los eventos">
 <?php	else: ?>
-			<input type="submit" name="filter_action"  todaydate="<?php echo date_i18n($wpsecfg['dateformat']); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="Eventos para Hoy">
+			<input type="submit" name="filter_action"  todaydate="<?php echo date_i18n($wpsecfg['dateformat']); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="Mostrar todos los eventos">
 <?php	endif; ?>
+		<?php
+		}
+		else { ?>
+				<?php 	if( current_user_can('administrator') ) : ?>
+			<a href="<?php echo admin_url('edit.php?post_type=wpsellerevents'); ?>" id="filter_today_event" class="button" style="background-color:red; color:white;">Eventos para hoy</a>
+			
+<?php	else: ?>
+			<a href="<?php echo admin_url('edit.php?post_type=wpsellerevents'); ?>" id="filter_today_event" class="button" style="background-color:red; color:white;">Eventos para hoy</a>
+			
+<?php	endif; ?>
+			<?php
+		}
+
+		 ?>
+
 		<input type="hidden" name="filter_action_todaydate" value="no" id="filter_action_todaydate">
 		</div>
 <?php
@@ -378,16 +400,9 @@ class sellerevent_posttype {
 		$datestart	= (is_int( $datestart) ) ? $datestart : WPSellerEvents::date2time($datestart, $wpsecfg['dateformat'].' '.get_option('time_format') );
 		$dateend	= (!isset($_GET['dateend']) ) ? current_time('timestamp')  : $_GET['dateend'];
 		$dateend	= (is_int( $dateend) ) ? $dateend : WPSellerEvents::date2time($dateend, $wpsecfg['dateformat'].' '.get_option('time_format') );
-
-		?><div style="display: inline-block;vertical-align: top;margin: 1px 8px 0px 0px;">
-			<input name="range_action" id="queryrange" class="button" value="<?php _e('Date Range', WPSellerEvents :: TEXTDOMAIN ); ?>" type="button"><br/>
-			<input name="byrange" id="byrange" value="<?php echo $byrange; ?>" type="hidden">
-			<span style="position: absolute; background: #5D9F81; padding: 3px; width: 152px;" class="<?php echo ($byrange=='yes' && $_GET['filter_action_todaydate']!="yes") ? '' : 'hidden'; ?> daterange">
-			<input style="width: 100%;" name="datestart" id="datestart" class="fieldate" value="<?php echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $datestart ); 	?>" type="text"><br/>
-			<input style="width: 100%;" name="dateend" id="dateend" class="fieldate" value="<?php echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $dateend ); 	?>" type="text">
-			</span>
-
-		</div>
+		error_log($dateend);
+		error_log($datestart);
+		?>
 		<!--pdf jspdf-->
 		<input type="button" id="printButtonPDF" class="button right" value="<?php _e('Print PDF',WPSellerEvents :: TEXTDOMAIN); ?>">
 		<?php
