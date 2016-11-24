@@ -261,7 +261,7 @@ class sellerevent_posttype {
 		$user_info = get_userdata($current_user->ID);
 		$my_role = implode(', ',$user_info->roles);
 
-		$date_now = date_i18n($wpsecfg['dateformat'] .' '.get_option( 'time_format' ));
+		$date_now = date_i18n($wpsecfg['dateformat']);
 		$date_temp = 0;
 		$total_events_today = 0;
 		$args=array(
@@ -274,10 +274,12 @@ class sellerevent_posttype {
 		$my_query = new WP_Query($args);
 		if( $my_query->have_posts() ) {
 			while ($my_query->have_posts()) : $my_query->the_post(); 
-					$event_data = WPSellerEvents :: get_event (get_the_id()); 
-					$date_temp = date_i18n($wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $event_data['fromdate']);
-					if(($my_role == 'wpse_seller' && $current_user->ID == $event_data['seller_id']) || $my_role == 'administrator' || $my_role=='wpse_manager'){
-						if(substr($date_temp,0,10) == substr($date_now,0,10)){
+					$event_data = WPSellerEvents :: get_event (get_the_ID()); 
+					$date_temp = date_i18n($wpsecfg['dateformat'], $event_data['fromdate']);
+					//if( ($my_role == 'wpse_seller' && $current_user->ID == $event_data['seller_id']) || $my_role == 'administrator' || $my_role=='wpse_manager'){
+					if( (current_user_can('wpse_seller') && $current_user->ID == $event_data['seller_id']) || current_user_can('administrator') || current_user_can('wpse_manager') ){
+						//if(substr($date_temp,0,10) == substr($date_now,0,10)){
+						if($date_temp == $date_now){
 								$total_events_today+=1;
 
 						}								
@@ -288,7 +290,11 @@ class sellerevent_posttype {
 		?>
 		<!--FILFER EVENTS TODAY-->
 		<div class="alignleft actions">
-		<input type="submit" name="filter_action"  todaydate="<?php echo date_i18n($wpsecfg['dateformat']); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="<?php echo __('There are', WPSellerEvents :: TEXTDOMAIN). ' ' . $total_events_today.' '. __('events for today', WPSellerEvents :: TEXTDOMAIN); ?>">
+<?php 	if( current_user_can('administrator') ) : ?>
+			<input type="submit" name="filter_action"  todaydate="<?php echo date_i18n($wpsecfg['dateformat']); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="<?php echo __('There are', WPSellerEvents :: TEXTDOMAIN). ' ' . $total_events_today.' '. __('events for today', WPSellerEvents :: TEXTDOMAIN); ?>">
+<?php	else: ?>
+			<input type="submit" name="filter_action"  todaydate="<?php echo date_i18n($wpsecfg['dateformat']); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="Eventos para Hoy">
+<?php	endif; ?>
 		<input type="hidden" name="filter_action_todaydate" value="no" id="filter_action_todaydate">
 		</div>
 <?php

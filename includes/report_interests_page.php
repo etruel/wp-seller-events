@@ -9,8 +9,13 @@ if ( !defined('ABSPATH') || !defined('WP_ADMIN') ) {
 //functions 
 //formulated  days passed
 function days_passed($date_1,$date_2) {
-	$days	= (strtotime($date_1)-strtotime($date_2))/86400;
-	$days 	= abs($days); $days = floor($days);		
+	$days1= WPSellerEvents_functions::date2time($date_1);
+	$days2= WPSellerEvents_functions::date2time($date_2);
+//	$days1= strtotime($date_1);
+//	$days2= strtotime($date_2);
+	$days = ($days2-$days1)/86400;
+	$days = abs($days); 
+	$days = floor($days);		
 	return $days;
 }
 //rol user 
@@ -29,7 +34,7 @@ function get_user_role($current_user){
 	//formulated for events triggered by days to consider 
 	$wpsecfg = $this->check_options($this->options);
 	$consideration_days = $wpsecfg['consideration_days'];
-	$date_now = date_i18n($wpc_temp['dateformat'] .' '.get_option( 'time_format' ));
+	$date_now = date_i18n($wpsecfg['dateformat'] .' '.get_option( 'time_format' ));
 	//Query Arguments	
 	$args=array(
 		'order' => 'ASC', 
