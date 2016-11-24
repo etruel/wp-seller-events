@@ -295,7 +295,7 @@ class sellerevent_posttype {
 			$endt = date($wpsecfg['dateformat'], strtotime($startt . "+1 days")); 
 		 	$current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-			if (admin_url('edit.php?post_type=wpsellerevents&datestart='.$startt.'&dateend='.$endt.'&byrange=yes') == urldecode($current_url)) { ?>
+			if (strpos(urldecode($current_url), admin_url('edit.php?post_type=wpsellerevents&datestart='.$startt.'&dateend='.$endt.'&byrange=yes'))  !== false) { ?>
 
 <?php 	if( current_user_can('administrator') ) : ?>
 			<input type="submit" name="filter_action"  todaydate="<?php echo date_i18n($wpsecfg['dateformat']); ?>"  style="background-color:red; color:white;" id="filter_today_event" class="button" value="Mostrar todos los eventos">
