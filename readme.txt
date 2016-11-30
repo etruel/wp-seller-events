@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Sell, Post, posts, admin, aggregation, bot, content, cron, follow, reports, seller, buyer, sales
 Requires at least: 3.9
 Tested up to: 4.7
-Stable tag: 1.4
+Stable tag: 1.5
 
 Customer Relationship Management. Follow your salesmen to get a good workgroup and better results.
 
@@ -13,7 +13,7 @@ The plugin is a Customer relationship management and allow follow your salesmen 
 Languages english and spanish.  Fully translatable to other languages.  
 The language used is taken from Wordpress Settings if available, otherwise english is used.
 
-Tested with PHP 5.4
+Tested with PHP 5.4, 5.6 and 7.0
 
 This program is sold under the terms of the GNU General Public License either version 3 of the License, or (at your option) any later version.
 
@@ -47,6 +47,9 @@ You can either install it automatically from the WordPress admin, or do it manua
 3. Editing event.
 
 == Changelog ==
+
+= 1.5 =
+* Changed behaviour of the events list to filter the events for today and a red button to show all events.
 
 = 1.4 =
 * Added "the Red Button" on events list to filter the events for today.

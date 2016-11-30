@@ -1,9 +1,9 @@
 <?php
 /*
  Plugin Name: WP-Seller Events
- Plugin URI: http://etruel.com
+ Plugin URI: https://etruel.com/downloads/wp-seller-events/
  Description: Customer Relationship Management. Follow your salesmen to get a good workgroup and better results.
- Version: 1.4
+ Version: 1.5
  Author: etruel <esteban@netmdp.com>
  Author URI: http://www.netmdp.com
  */
