@@ -14,7 +14,6 @@ class wpsellerevents_event_run {
 	public $event	   = array();
 
 	public function __construct($event_id) {
-
 		global $wpdb,$event_log_message, $jobwarnings, $joberrors;
 		$jobwarnings=0;
 		$joberrors=0;
@@ -25,9 +24,7 @@ class wpsellerevents_event_run {
 
 		$this->event_id	= $event_id;		//set event id
 		$this->event		= WPSellerEvents :: get_event($this->event_id);
-		$this->wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
-
-	
+		$this->wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);	
 
 		//set function for PHP user defined error handling
 		if (defined(WP_DEBUG) and WP_DEBUG)
@@ -42,7 +39,7 @@ class wpsellerevents_event_run {
 		$mensaje .= "\n";
 		$mensaje .= "event_id = ". $event_id;
 		$mensaje .= "\n";
-		//$mensaje .= "cronnextrun = ". $cronnextrun;
+		//$mensaje .= "cronnextrun = ". $cronnextrun;   chequear esto, cual es la que va ?
 		$mensaje .= "cronnextrun = ". $this->event['cronnextrun'];
 		$mensaje .= "\n";
 		$mensaje .= "current_time = ". current_time('timestamp');
@@ -129,8 +126,8 @@ class wpsellerevents_event_run {
 			$headers[] = 'Content-Type: text/html; charset=UTF-8';
 			//add_filter('wp_mail_content_type', function(){ return 'text/html'; }); //function wpe_change_content_type(){ return 'text/html'; } 
 
-			//$to_seller_mail = $seller_mail;
-			$to_seller_mail = $seller->user_email;
+			$to_seller_mail = $seller_mail;
+
 			$title = get_the_title($this->event_id);
 			$subject = __('Event Alarm', WPSellerEvents :: TEXTDOMAIN ).' '.  current_time('Y-m-d H:i').': '.$title;
 			
@@ -220,4 +217,3 @@ function wpse_joberrorhandler($errno, $errstr, $errfile, $errline) {
 
 	
 }
-
