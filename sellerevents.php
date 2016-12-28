@@ -251,7 +251,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 			
 			//test if cron active
 			if ( wp_next_scheduled('wpsecronhook')===false ) {
-				wp_schedule_event(0, 'wpse_5min', 'wpsecronhook');
+				wp_schedule_event(time(), 'wpse_5min', 'wpsecronhook');
 			}
 		}
 
