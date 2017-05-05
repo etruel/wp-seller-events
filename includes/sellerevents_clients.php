@@ -104,8 +104,9 @@ class sellerevents_clients {
 	public static function custom_filters($options) {
 		global $typenow, $wp_query;
 		global $current_user, $pagenow;
+	
+
 		if($pagenow=='edit.php' && is_admin() && current_user_can('read_wpse_client') && $typenow=='wpse_client') {
-			
 			$taxonomy = 'segment';
 			$term = get_term_by('slug', 
 								(isset($wp_query->query_vars['segment'])) ? $wp_query->query_vars['segment'] : '' , 
@@ -327,14 +328,21 @@ class sellerevents_clients {
 		// Show only posts and media related to logged in author
 	public static function query_set_only_author( $wp_query ) {
 		global $current_user;
+		$type_user = get_userdata($current_user->ID);
 		if( is_admin() && !current_user_can('edit_others_sellerevents') ) {
-			$wp_query->set( 'author', $current_user->ID );
+			if(!empty($type_user) && in_array( "wpse_seller",(array) $type_user->roles)){
+				$wp_query->set('meta_key','user_aseller');
+				$wp_query->set('meta_value',$current_user->ID);
+			}else{
+				$wp_query->set( 'author', $current_user->ID );
+			}
 			add_filter('views_edit-wpse_client',  array(__CLASS__,'fix_post_counts'));
 		}
 	}
 
 	// Fix post counts
 	public static function fix_post_counts($views) {
+
 		global $current_user, $wp_query;
 		unset($views['mine']);
 		$types = array(
