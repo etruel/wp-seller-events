@@ -197,9 +197,7 @@ class sellerevents_eventedit {
 		<div class="clear"></div>
 		<div style="text-align:left;">
 		<p><b><?php echo '<label for="fromdate">' . __('Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
-			<input class="fieldate" type="text" name="fromdate" value="<?php 
-				echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate ); 				
-				?>" id="fromdate"/>&nbsp; &nbsp; 
+			<input class="fieldate" type="text" name="fromdate" value="<?php echo date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $fromdate ); ?>" id="fromdate"/>&nbsp; &nbsp; 
 		<?php if($wpsecfg['editor_type']!="Basic") : ?>
 			<b><?php echo '<label for="todate">' . __('To Date', WPSellerEvents :: TEXTDOMAIN ) . '</label>'; ?>: </b>
 			<input class="fieldate" type="text" name="todate" value="<?php 
@@ -935,7 +933,7 @@ class sellerevents_eventedit {
 			);
 			echo "$('.datetimepicker').datetimepicker({
 				lang: '{$objectL10n->lang}',
-				dayOfWeekStart: {$objectL10n->firstDay},
+				dayOfWeekStart: '{$objectL10n->firstDay}',
 				formatTime:'{$objectL10n->timeFormat}',
 				format:'{$objectL10n->printFormat}',
 				formatDate:'{$objectL10n->dateFormat}',
@@ -944,7 +942,7 @@ class sellerevents_eventedit {
 
 			echo "$('#fromdate').datetimepicker({
 				lang: '{$objectL10n->lang}',
-				dayOfWeekStart: {$objectL10n->firstDay},
+				dayOfWeekStart: '{$objectL10n->firstDay}',
 				formatTime:'{$objectL10n->timeFormat}',
 				format:'{$objectL10n->printFormat}',
 				formatDate:'{$objectL10n->dateFormat}'
@@ -954,7 +952,7 @@ class sellerevents_eventedit {
 			
 			echo "$('#todate').datetimepicker({
 				lang: '{$objectL10n->lang}',
-				dayOfWeekStart: {$objectL10n->firstDay},
+				dayOfWeekStart: '{$objectL10n->firstDay}',
 				formatTime:'{$objectL10n->timeFormat}',
 				format:'{$objectL10n->printFormat}',
 				formatDate:'{$objectL10n->dateFormat}'
