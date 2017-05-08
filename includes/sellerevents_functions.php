@@ -139,7 +139,7 @@ class WPSellerEvents_functions {
 			 $seconds = 3600*24;
 			 break;
 		}
-		$cronseconds = $eventdata['quantity']*$seconds;
+		$cronseconds = (int)$eventdata['quantity']*$seconds;
 		$eventdata['cronnextrun']= $eventdata['fromdate'] - $cronseconds ;
 		//$aa =date_i18n( $wpsecfg['dateformat'] .' '.get_option( 'time_format' ), $eventdata['cronnextrun']);
 		if ( $eventdata['cronnextrun'] <= current_time('timestamp') ) 
