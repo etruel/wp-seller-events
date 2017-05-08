@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Sell, Post, posts, admin, aggregation, bot, content, cron, follow, reports, seller, buyer, sales
 Requires at least: 3.9
 Tested up to: 4.7
-Stable tag: 1.6
+Stable tag: 1.7
 
 Customer Relationship Management. Follow your salesmen to get a good workgroup and better results.
 
@@ -47,6 +47,12 @@ You can either install it automatically from the WordPress admin, or do it manua
 3. Editing event.
 
 == Changelog ==
+
+= 1.7 =
+* Fixes the current date year by default on create an event.
+* Fixes on showing the list of events by seller.
+* Fixes deprecated functions to get current user data.
+* Upgraded Plugin Updater to 1.6.11.
 
 = 1.6 =
 * Fixes a cron behaviour that sometimes avoids the emails can be sent.

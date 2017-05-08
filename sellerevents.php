@@ -3,7 +3,7 @@
  Plugin Name: WP-Seller Events
  Plugin URI: https://etruel.com/downloads/wp-seller-events/
  Description: Customer Relationship Management. Follow your salesmen to get a good workgroup and better results.
- Version: 1.6
+ Version: 1.7
  Author: etruel <esteban@netmdp.com>
  Author URI: http://www.netmdp.com
  */
@@ -589,7 +589,7 @@ if ( !class_exists( 'WPSellerEvents' ) ) {
 				}
 				// Roles 
 				global $wp_roles, $current_user;    
-				get_currentuserinfo();
+				$current_user = wp_get_current_user();
 				$role_conf = array();
 				foreach ( $_POST['role_name'] as $role_id => $role_val ) {
 					$role_conf["$role_val"]= $role_val;
