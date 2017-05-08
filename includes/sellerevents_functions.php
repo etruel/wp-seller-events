@@ -321,12 +321,9 @@ class WPSellerEvents_functions {
 		}
 		$event_data = get_post_meta( $post_id , 'event_data', true );
 
-		//$event_data['event_id'] = $post_id;
-		//$event_data['event_title'] = get_the_title($post_id);
-		$event_data = array(
-			'event_id'=>$post_id,
-			'event_title'=>get_the_title($post_id)
-		);
+		$event_data['event_id'] = $post_id;
+		$event_data['event_title'] = get_the_title($post_id);
+	
 		return $event_data;
 	}
 	

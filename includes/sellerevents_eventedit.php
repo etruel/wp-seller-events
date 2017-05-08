@@ -83,7 +83,9 @@ class sellerevents_eventedit {
 	
 	public static function create_meta_boxes() {
 		global $post,$event_data, $wpsecfg;
-		$event_data = WPSellerEvents :: get_event($post->ID);
+		if(isset($_GET['action']) && $_GET['action']=='edit'){
+			$event_data = WPSellerEvents :: get_event($post->ID);
+		}
 		$event_data = apply_filters('wpse_check_eventdata', $event_data);
 		$wpsecfg = get_option(WPSellerEvents :: OPTION_KEY);
 		$wpsecfg = apply_filters('wpse_check_options', $wpsecfg);
